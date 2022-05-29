@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { HeartIcon, EyeIcon } from "@heroicons/react/outline";
 
 const GenerationCard = ({ generation, cot }) => {
-  const level = cot < 10 ? "3" : cot < 50 ? "2" : "1";
-  const imageUrl = `../assets/nft/lv${level}/02.webp`;
+  const [imageUrl, setImageUrl] = useState(null);
+  console.log(imageUrl);
+  useEffect(() => {
+    const level = cot < 10 ? "3" : cot < 50 ? "2" : "1";
+    setImageUrl(require(`../assets/nft/lv${level}/02.webp`));
+  }, [cot]);
   return (
-    <div className="rounded-xl shadow-md">
-      <img src={imageUrl} alt="" />
+    <div className="rounded-xl shadow-md overflow-hidden">
+      {imageUrl && (
+        <img
+          src={imageUrl}
+          alt=""
+          className="w-[300px] h-[300px] object-cover"
+        />
+      )}
+
       <div className="p-4 relative">
         <div className="flex flex-col">
           <p>Generation: {generation}</p>

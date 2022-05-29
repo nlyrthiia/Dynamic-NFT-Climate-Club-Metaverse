@@ -34,8 +34,7 @@ const Single = () => {
     description:
       "Friendly OpenSea Creature that enjoys long swims in the ocean.",
     external_url: "https://openseacreatures.io/3",
-    image:
-      "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png",
+    image: require("../assets/nft/lv3/50.webp"),
     attributes: [
       {
         trait_type: "color",
@@ -71,7 +70,7 @@ const Single = () => {
       },
     ],
     cotInfo: {
-      Amount: "100t",
+      Amount: "1t",
       Location: "Sichuan, China",
       Registry: "Gold Standard",
       Methology: "COM PoA 2898GS 1239",
@@ -270,9 +269,11 @@ const Single = () => {
         </div>
       </Accordion>
       <Accordion title="Changing History" Icon={ClockIcon}>
-        <GenerationCard generation="4th" cot={4} />
-        <GenerationCard generation="3trd" cot={4} />
-        <GenerationCard generation="2nd" cot={4} />
+        <div className="flex items-center justify-start gap-4 p-4">
+          <GenerationCard generation="4th" cot={4} />
+          <GenerationCard generation="3rd" cot={30} />
+          <GenerationCard generation="2nd" cot={100} />
+        </div>
       </Accordion>
     </div>
   );
