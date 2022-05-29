@@ -1,11 +1,11 @@
 import React from "react";
 
 import { CollectionCard } from "../components";
-import collection_b from "../assets/collectionB.png";
-import collection_c from "../assets/collectionC.png";
-import collection_d from "../assets/collectionD.png";
-import collection_e from "../assets/collectionE.png";
-import collection_f from "../assets/collectionA.png";
+import collection_b from "../assets/collectionB.webp";
+import collection_c from "../assets/collectionC.webp";
+import collection_d from "../assets/collectionD.webp";
+import collection_e from "../assets/collectionE.webp";
+import collection_f from "../assets/collectionA.webp";
 
 const collections = {
   A: {

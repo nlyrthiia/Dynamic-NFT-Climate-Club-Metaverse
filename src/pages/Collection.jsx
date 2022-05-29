@@ -12,10 +12,10 @@ import {
 } from "@heroicons/react/outline";
 
 import WalletContext from "../context/WalletContext";
-import avatar from "../assets/avatar.png";
+import avatar from "../assets/avatar.webp";
 import polygonIcon from "../assets/polygon-icon.png";
-import projectHead from "../assets/collection-head.jpeg";
-import projectAvatar from "../assets/collection-logo.png";
+import projectHead from "../assets/collection-head.webp";
+import projectAvatar from "../assets/collection-logo.webp";
 import bg from "../assets/bg.png";
 import { NFTListCard } from "../components";
 import clsx from "clsx";
