@@ -1,9 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const CollectionCard = ({ background, slug, name, creator, title, cot }) => {
+const CollectionCard = ({
+  background,
+  contractAddress,
+  name,
+  creator,
+  title,
+  cot,
+}) => {
   return (
-    <Link to={slug} className="relative text-white">
+    <Link to={`/assets/${contractAddress}`} className="relative text-white">
       <div
         className="w-[300px] h-[300px] rounded-xl p-10 cursor-pointer flex flex-col justify-center items-center gap-2"
         style={{

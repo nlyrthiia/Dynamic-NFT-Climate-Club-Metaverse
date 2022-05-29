@@ -14,7 +14,7 @@ const truncate = (address) => {
 const Navbar = () => {
   const { walletInfo, error, handleWalletConnect } = useContext(WalletContext);
   return (
-    <header className="w-full h-[100px] sticky top-0 shadow-xl">
+    <header className="w-full h-[100px] sticky top-0 shadow-xl z-10 bg-white">
       <div className="container h-full mx-auto flex items-center justify-between px-10">
         <Link to="/">
           <img src={logo} alt="DCCM LOGO" className="h-full" />
@@ -88,7 +88,7 @@ const Navbar = () => {
                   "text-black before:block before:absolute before:top-[60px] before:w-full before:h-[4px] before:bg-[#73c000] relative inline-block"
               )
             }
-            to="profile"
+            to="account"
           >
             {walletInfo.address ? (
               <UserIcon className="text-blue-500 h-8 w-8" />
