@@ -11,15 +11,15 @@ function App() {
     <WalletProvider>
       <Router>
         <Navbar />
-        <ToastContainer className="translate-y-[100px]" />
+        <ToastContainer limit={1} className="translate-y-[100px]" />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="explore" element={<Explore />} />
           <Route path="initial-minting" element={<InitialMinting />} />
-          <Route path="/account">
-            <Route index path="/account/:address" element={<Collection />} />
+          <Route path="account" element={<Collection />}>
+            <Route path=":address" element={<Collection />} />
           </Route>
-          <Route path="/assets">
+          <Route path="assets">
             <Route index path=":contractAddress" element={<Collection />} />
             <Route path=":contractAddress/:tokenId" element={<Single />} />
           </Route>

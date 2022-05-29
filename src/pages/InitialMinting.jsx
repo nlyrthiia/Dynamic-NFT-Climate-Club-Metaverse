@@ -24,7 +24,7 @@ const InitialMinting = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center justify-start gap-2">
                 <label
-                  for="cot_amount"
+                  htmlFor="cot_amount"
                   className="flex flex-col items-start justify-center"
                 >
                   <p>Carbon offsets Credits（COT）</p>
@@ -43,7 +43,7 @@ const InitialMinting = () => {
               </div>
               <div className="flex items-center justify-start gap-2">
                 <label
-                  for="cot_unit_price"
+                  htmlFor="cot_unit_price"
                   className="flex flex-col items-start justify-center"
                 >
                   <p>COT unit Price</p>

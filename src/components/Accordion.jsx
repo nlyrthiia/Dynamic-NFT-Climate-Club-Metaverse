@@ -4,7 +4,6 @@ import { ChevronUpIcon } from "@heroicons/react/outline";
 
 const Accordion = ({ Icon, title, children }) => {
   const [isOpen, setIsOpen] = useState(true);
-  console.log(isOpen);
   return (
     <>
       <div className="rounded-xl w-full bg-white border border-gray-200">

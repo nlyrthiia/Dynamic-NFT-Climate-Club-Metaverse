@@ -19,7 +19,7 @@ const Navbar = () => {
     handleNetworkChange,
   } = useContext(WalletContext);
   return (
-    <header className="w-full h-[100px] sticky top-0 shadow-xl z-10 bg-white">
+    <header className="w-full h-[100px] sticky top-0 shadow-lg z-10 bg-white">
       <div className="container h-full mx-auto flex items-center justify-between px-10">
         <Link to="/">
           <img src={logo} alt="DCCM LOGO" className="h-full" />
