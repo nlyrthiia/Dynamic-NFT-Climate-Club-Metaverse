@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   ChevronDownIcon,
@@ -11,11 +11,21 @@ import {
   XIcon,
   ClipboardListIcon,
   SwitchHorizontalIcon,
+  BookmarkIcon,
+  CubeTransparentIcon,
 } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
-import { Accordion, GenerationCard, SingleNFTCard } from "../components";
+import {
+  Accordion,
+  GenerationCard,
+  SingleNFTCard,
+  Modal,
+  SplitForm,
+} from "../components";
 import chart from "../assets/chart.png";
+import WalletContext from "../context/WalletContext";
 
 const PropertyCard = ({ name, value }) => {
   return (
@@ -28,6 +38,10 @@ const PropertyCard = ({ name, value }) => {
 
 const Single = () => {
   const { contractAddress, tokenId } = useParams();
+  const { walletInfo } = useContext(WalletContext);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalContext, setModalContext] = useState(null);
+
   const owner = "0x9c8c9f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f";
   const metadata = {
     name: "Dave Starbelly",
@@ -70,7 +84,7 @@ const Single = () => {
       },
     ],
     cotInfo: {
-      Amount: "1t",
+      "Amount(t)": 1,
       Location: "Sichuan, China",
       Registry: "Gold Standard",
       Methology: "COM PoA 2898GS 1239",
@@ -83,10 +97,35 @@ const Single = () => {
     Bloclchain: "Polygon",
     Metadata: "Frozen",
     "Creator Fees": "2.5%",
-    COT: `${metadata.cotInfo.Amount}`,
+    COT: `${metadata.cotInfo.Amount}t`,
   };
   return (
     <div className="container mx-auto p-8 space-y-4">
+      <AnimatePresence>
+        {modalIsOpen && modalContext && (
+          <Modal
+            handleClose={() => setModalIsOpen(false)}
+            title={modalContext}
+            Icon={CubeTransparentIcon}
+          >
+            {modalContext === "Neutralize" ? (
+              <div className="flex flex-col items-center justify-between gap-8">
+                <p>
+                  Have you used the Carbon Offset (COT) in this DNFT to help
+                  with carbon neutrality？
+                </p>
+                <button className="p-2 px-4 rounded-xl bg-red-500 text-white">
+                  Confirm
+                </button>
+              </div>
+            ) : (
+              <div>
+                <SplitForm cot={metadata.cotInfo["Amount(t)"]} />
+              </div>
+            )}
+          </Modal>
+        )}
+      </AnimatePresence>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-4">
           <SingleNFTCard imageUrl={metadata.image} />
@@ -114,12 +153,39 @@ const Single = () => {
                 </div>
               </div>
               <div className="flex items-center justify-end gap-6">
-                <button className="p-4 rounded-xl bg-[#d5f4ce] font-bold border border-[#73c000]">
-                  Split into New NFT
-                </button>
-                <button className="p-4 rounded-xl bg-[#73ca67] font-bold">
-                  Neutralized
-                </button>
+                {owner === walletInfo.address ? (
+                  <>
+                    <button
+                      className="p-4 rounded-xl bg-[#d5f4ce] font-bold border border-[#73c000]"
+                      onClick={() => {
+                        setModalIsOpen(true);
+                        setModalContext("Split into New NFT");
+                      }}
+                    >
+                      Split into New NFT
+                    </button>
+                    <button
+                      className="p-4 rounded-xl bg-[#73ca67] font-bold"
+                      onClick={() => {
+                        setModalIsOpen(true);
+                        setModalContext("Neutralize");
+                      }}
+                    >
+                      Neutralized
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button className="flex items-center justify-center gap-4 p-4 rounded-xl bg-[#d5f4ce] font-bold border border-[#73c000]">
+                      <BookmarkIcon className="w-6 h-6" />
+                      <p>Make Offer</p>
+                    </button>
+                    <button className="flex items-center justify-center gap-4 p-4 rounded-xl bg-[#73ca67] font-bold">
+                      <DatabaseIcon className="w-6 h-6" />
+                      <p>Buy Now</p>
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>

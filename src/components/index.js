@@ -6,3 +6,5 @@ export { default as Accordion } from "./Accordion";
 export { default as GenerationCard } from "./GenerationCard";
 export { default as NFTListCard } from "./NFTListCard";
 export { default as ScrollToTop } from "./ScrollToTop";
+export { default as Modal } from "./Modal";
+export { default as SplitForm } from "./SplitForm";
