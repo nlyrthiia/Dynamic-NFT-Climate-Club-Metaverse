@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { Navbar } from "./components";
-import { Home, Explore, Collection, Single } from "./pages";
+import { Home, Explore, Collection, Single, InitialMinting } from "./pages";
 import { WalletProvider } from "./context/WalletContext";
 
 function App() {
@@ -12,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="explore" element={<Explore />} />
+          <Route path="initial-minting" element={<InitialMinting />} />
           <Route path="/account">
             <Route index path="/account/:address" element={<Collection />} />
           </Route>

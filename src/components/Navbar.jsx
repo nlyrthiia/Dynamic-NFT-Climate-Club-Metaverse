@@ -64,9 +64,9 @@ const Navbar = () => {
                   "text-black before:block before:absolute before:top-[60px] before:w-full before:h-[4px] before:bg-[#73c000] relative inline-block"
               )
             }
-            to="mint"
+            to="initial-minting"
           >
-            Mint
+            Initial Minting
           </NavLink>
           <NavLink
             className={({ isActive }) =>
