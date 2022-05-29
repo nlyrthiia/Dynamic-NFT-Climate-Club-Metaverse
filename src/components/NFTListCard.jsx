@@ -19,11 +19,11 @@ const NFTListCard = ({ cot, contractAddress, tokenId }) => {
           </div>
           <div className="flex flex-col items-end justify-between gap-2">
             <div className="flex flex-col items-end justify-center">
-              <div className="flex items-center justify-center gap-1">
+              <div className="flex items-center justify-center gap-1.5">
                 <p className="font-semibold">Price</p>
                 <svg
-                  width="12"
-                  height="12"
+                  width="16"
+                  height="16"
                   viewBox="0 0 12 10"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -39,11 +39,11 @@ const NFTListCard = ({ cot, contractAddress, tokenId }) => {
               <p className="text-xs text-gray-500">0.01DAI</p>
             </div>
             <div className="flex flex-col items-end justify-center">
-              <div className="flex items-center justify-center  gap-1">
+              <div className="flex items-center justify-center  gap-1.5">
                 <p className="font-semibold">COT</p>
                 <svg
-                  width="12"
-                  height="12"
+                  width="16"
+                  height="16"
                   viewBox="0 0 8 8"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -59,11 +59,11 @@ const NFTListCard = ({ cot, contractAddress, tokenId }) => {
               <p className="text-xs text-gray-500">{cot}t</p>
             </div>
             <div className="flex flex-col items-end justify-center">
-              <div className="flex items-center justify-center gap-1">
-                <p className="font-semibold">Trading times</p>
+              <div className="flex items-center justify-center gap-1.5">
+                <p className="font-semibold tracking-tighter">Trade times</p>
                 <svg
-                  width="12"
-                  height="12"
+                  width="16"
+                  height="16"
                   viewBox="0 0 8 8"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"

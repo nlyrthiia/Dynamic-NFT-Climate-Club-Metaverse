@@ -140,7 +140,7 @@ const Project = ({ contractAddress }) => {
       </div>
       <div
         className={clsx(
-          "overflow-hidden max-h-[500px] space-y-4 p-8 relative cursor-pointer transition-max-h duration-300 ease-in-out",
+          "overflow-hidden max-h-[500px] space-y-4 p-8 relative cursor-pointer transition-max-h duration-300 ease-in-out max-w-[1920px]",
           !moreInfo && "max-h-[200px]"
         )}
         onClick={() => setMoreInfo((prev) => !prev)}
@@ -227,7 +227,7 @@ const Collection = () => {
               <SearchIcon className="text-gray-400 w-6 h-6 absolute right-3 top-1/2 -translate-y-1/2" />
             </div>
           </div>
-          <div className="grid grid-cols-5 p-8 px-10 gap-12">
+          <div className="grid grid-cols-5 p-8 px-10 gap-8 mx-auto max-w-[1920px]">
             {Array(100)
               .fill(8000)
               .map((item, index) => (
