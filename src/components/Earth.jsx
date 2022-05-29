@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { useLoader } from "@react-three/fiber";
+import { useLoader, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 import EarthDayMap from "../assets/textures/8k_earth_daymap.jpg";
@@ -13,11 +13,19 @@ const Earth = () => {
     TextureLoader,
     [EarthDayMap, EarthNormalMap, EarthSpecularMap, EarthCloudsMap]
   );
+  const earthRef = useRef();
+  const cloudsRef = useRef();
+  useFrame(({ clock }) => {
+    const elapsedTime = clock.getElapsedTime();
+
+    earthRef.current.rotation.y = elapsedTime / 6;
+    cloudsRef.current.rotation.y = elapsedTime / 6;
+  });
   return (
     <>
       <pointLight color="#f6f3ea" position={[2, 0, 5]} intensity={1.2} />
       <ambientLight intensity={0.8} />
-      <mesh position={[0, 0, 3]}>
+      <mesh ref={cloudsRef} position={[0, 0, 3]}>
         <sphereGeometry args={[1.005, 32, 32]} />
         <meshPhongMaterial
           map={cloudsMap}
@@ -27,7 +35,7 @@ const Earth = () => {
           side={THREE.DoubleSide}
         />
       </mesh>
-      <mesh position={[0, 0, 3]}>
+      <mesh ref={earthRef} position={[0, 0, 3]}>
         <sphereGeometry args={[1, 32, 32]} />
         <meshPhongMaterial specularMap={specularMap} />
         <meshStandardMaterial
