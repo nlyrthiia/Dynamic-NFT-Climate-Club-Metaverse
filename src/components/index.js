@@ -5,3 +5,4 @@ export { default as SingleNFTCard } from "./SingleNFTCard";
 export { default as Accordion } from "./Accordion";
 export { default as GenerationCard } from "./GenerationCard";
 export { default as NFTListCard } from "./NFTListCard";
+export { default as ScrollToTop } from "./ScrollToTop";

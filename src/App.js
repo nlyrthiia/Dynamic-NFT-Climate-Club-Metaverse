@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { Navbar } from "./components";
+import { Navbar, ScrollToTop } from "./components";
 import { Home, Explore, Collection, Single, InitialMinting } from "./pages";
 import { WalletProvider } from "./context/WalletContext";
 
@@ -10,6 +10,7 @@ function App() {
   return (
     <WalletProvider>
       <Router>
+        <ScrollToTop />
         <Navbar />
         <ToastContainer limit={1} className="translate-y-[100px]" />
         <Routes>
