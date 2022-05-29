@@ -3,35 +3,35 @@ import React from "react";
 import { CollectionCard } from "../components";
 import collection_b from "../assets/collectionB.webp";
 import collection_c from "../assets/collectionC.webp";
-import collection_d from "../assets/collectionD.webp";
+import collection_f from "../assets/collectionF.webp";
 import collection_e from "../assets/collectionE.webp";
-import collection_f from "../assets/collectionA.webp";
+import collection_a from "../assets/collectionA.webp";
 
 const collections = {
   A: {
     contractAddress: "0x0",
-    background: collection_b,
+    background: collection_a,
     title: "Greentech Emissions Reductions",
     creator: "F",
     cot: 100,
   },
   B: {
     contractAddress: "0x0",
-    background: collection_c,
+    background: collection_b,
     title: "Sichuan Biogas Stove Development Programme",
     creator: "F",
     cot: 100,
   },
   C: {
     contractAddress: "0x0",
-    background: collection_b,
+    background: collection_c,
     creator: "F",
     title: "Greentech Emissions Reductions",
     cot: 100,
   },
   D: {
     contractAddress: "0x0",
-    background: collection_d,
+    background: collection_a,
     creator: "F",
     title: "Solar Cooking for Refugee Families in Chad",
     cot: 100,
