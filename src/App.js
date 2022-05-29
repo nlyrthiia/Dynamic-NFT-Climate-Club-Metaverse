@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { Navbar } from "./components";
 import { Home, Explore, Collection, Single, InitialMinting } from "./pages";
@@ -9,6 +11,7 @@ function App() {
     <WalletProvider>
       <Router>
         <Navbar />
+        <ToastContainer className="translate-y-[100px]" />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="explore" element={<Explore />} />

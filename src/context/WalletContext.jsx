@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { ethers } from "ethers";
+import { toast } from "react-toastify";
 
 const WalletContext = createContext();
 
@@ -23,6 +24,9 @@ export const WalletProvider = ({ children }) => {
     balance: null,
   });
   const [error, setError] = useState(null);
+  useEffect(() => {
+    if (error) toast.error(error);
+  }, [error]);
 
   if (window.ethereum) {
     window.ethereum.on("chainChanged", (chainId) => {
@@ -40,11 +44,12 @@ export const WalletProvider = ({ children }) => {
     });
   }
 
-  const handleNetworkChange = async (network, provider) => {
+  const handleNetworkChange = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
     try {
       await provider.send("wallet_addEthereumChain", [
         {
-          ...network,
+          ...network.polygon,
         },
       ]);
     } catch (err) {
@@ -59,7 +64,7 @@ export const WalletProvider = ({ children }) => {
       try {
         const { chainId } = await provider.getNetwork();
         if (chainId.toString() !== network.polygon.chainId) {
-          handleNetworkChange(network.polygon, provider);
+          handleNetworkChange();
         }
         await provider.send("eth_requestAccounts", []);
         const signer = provider.getSigner();

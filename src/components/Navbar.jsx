@@ -12,7 +12,12 @@ const truncate = (address) => {
 };
 
 const Navbar = () => {
-  const { walletInfo, error, handleWalletConnect } = useContext(WalletContext);
+  const {
+    walletInfo,
+    error,
+    handleWalletConnect,
+    handleNetworkChange,
+  } = useContext(WalletContext);
   return (
     <header className="w-full h-[100px] sticky top-0 shadow-xl z-10 bg-white">
       <div className="container h-full mx-auto flex items-center justify-between px-10">
@@ -98,6 +103,13 @@ const Navbar = () => {
           </NavLink>
           {!error && walletInfo.address ? (
             <div className="text-black">{truncate(walletInfo.address)}</div>
+          ) : error && walletInfo.address ? (
+            <button
+              onClick={handleNetworkChange}
+              className="p-2 bg-red-500 text-white rounded-xl"
+            >
+              Switch Network
+            </button>
           ) : (
             <button onClick={handleWalletConnect}>
               <CreditCardIcon className="h-8 w-8" />
