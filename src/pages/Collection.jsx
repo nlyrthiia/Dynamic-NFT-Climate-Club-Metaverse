@@ -10,15 +10,16 @@ import {
   ShoppingBagIcon,
   NewspaperIcon,
 } from "@heroicons/react/outline";
+import clsx from "clsx";
 
+import { NFTListCard } from "../components";
 import WalletContext from "../context/WalletContext";
+import { collections } from "../data";
 import avatar from "../assets/avatar.webp";
 import polygonIcon from "../assets/polygon-icon.png";
 import projectHead from "../assets/collection-head.webp";
 import projectAvatar from "../assets/collection-logo.webp";
 import bg from "../assets/bg.png";
-import { NFTListCard } from "../components";
-import clsx from "clsx";
 
 const Account = ({ address }) => {
   const { walletInfo } = useContext(WalletContext);
@@ -81,6 +82,9 @@ const Account = ({ address }) => {
 
 const Project = ({ contractAddress }) => {
   const [moreInfo, setMoreInfo] = useState(false);
+  const [collectionName, collectionInfo] = Object.entries(collections).find(
+    (c) => c[1].contractAddress === contractAddress
+  );
   return (
     <>
       <div
@@ -93,20 +97,22 @@ const Project = ({ contractAddress }) => {
           className="h-[300px] w-auto absolute left-1/2 -translate-x-1/2 top-[100%] -translate-y-1/2"
         />
       </div>
-      <div className="flex flex-col items-center justify-center mt-40 gap-4 border-b border-gray-200 pb-6">
+      <div
+        className="flex flex-col items-center justify-center mt-40 gap-4 border-b border-gray-200 pb-6 bg-no-repeat bg-cover"
+        style={{ backgroundImage: `url(${bg})` }}
+      >
         <div className="flex flex-col items-center justify-center">
-          <h1 className="text-5xl font-bold">Collection B</h1>
+          <h1 className="text-5xl font-bold">{collectionName}</h1>
           <div className="flex items-center justify-center">
             <img src={polygonIcon} alt="" className="w-10 h-10" />
             <p className="font-semibold">{contractAddress}</p>
           </div>
         </div>
         <p>
-          Created By <span className="text-[#73c000]">F</span>
+          Created By{" "}
+          <span className="text-[#73c000]">{collectionInfo.creator}</span>
         </p>
-        <p className="text-lg font-semibold">
-          Sichuan Biogas Stove Development Programme
-        </p>
+        <p className="text-lg font-semibold">{collectionInfo.title}</p>
       </div>
       <div className="flex items-center justify-evenly py-3 border-b border-gray-200 text-sm bg-white">
         <div className="flex flex-col items-center justify-center gap-4">
@@ -196,10 +202,7 @@ const Project = ({ contractAddress }) => {
 const Collection = () => {
   const { address, contractAddress } = useParams();
   return (
-    <div
-      className="w-full h-screen bg-no-repeat bg-cover"
-      style={{ backgroundImage: `url(${bg})` }}
-    >
+    <div className="w-full h-screen">
       {!contractAddress ? (
         <>
           <Account address={address} />

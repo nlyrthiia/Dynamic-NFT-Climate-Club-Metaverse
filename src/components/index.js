@@ -8,3 +8,4 @@ export { default as NFTListCard } from "./NFTListCard";
 export { default as ScrollToTop } from "./ScrollToTop";
 export { default as Modal } from "./Modal";
 export { default as SplitForm } from "./SplitForm";
+export { default as YoutubeEmbed } from "./YoutubeEmbed";

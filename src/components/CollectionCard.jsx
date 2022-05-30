@@ -17,6 +17,7 @@ const CollectionCard = ({
           backgroundImage: `linear-gradient(135deg, rgba(120, 120, 120, 0.5), rgba(0, 0, 0, 0.5)), url(${background})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
         <h2 className="text-4xl">{name}</h2>
@@ -24,7 +25,7 @@ const CollectionCard = ({
         <h3 className="text-sm text-center">{title}</h3>
       </div>
       <div className="absolute bottom-2 right-4 text-[10px]">
-        total market cap : {cot}T
+        total market cap : {cot}t
       </div>
     </Link>
   );

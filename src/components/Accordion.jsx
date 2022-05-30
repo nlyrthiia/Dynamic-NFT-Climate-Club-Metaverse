@@ -29,7 +29,7 @@ const Accordion = ({ Icon, title, children }) => {
         </h2>
         <div
           className={clsx(
-            "w-full max-h-[1000px] transition-max-h duration-300 overflow-hidden",
+            "w-full max-h-[1000px] transition-max-h duration-300 overflow-hidden bg-[#fbfffb]",
             !isOpen && "max-h-0"
           )}
         >

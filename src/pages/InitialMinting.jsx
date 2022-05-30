@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { GlobeIcon } from "@heroicons/react/outline";
 
+import bg from "../assets/bg.png";
+
 const InitialMinting = () => {
   const [input, setInput] = useState({
     cot_amout: "",
@@ -10,17 +12,17 @@ const InitialMinting = () => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
   return (
-    <div className="container mx-auto pt-20">
-      <div className="h-[calc(100vh-100px)]">
+    <div style={{ backgroundImage: `url(${bg})` }}>
+      <div className="h-[calc(100vh-100px)] container mx-auto pt-20">
         <h1 className="text-6xl text-center font-bold mb-24">
           Initial Minting
         </h1>
         <div className="rounded-xl border border-gray-200">
-          <div className="p-4 border-b border-gray-200 flex items-center justify-start gap-4">
+          <div className="p-4 border-b border-gray-200 flex items-center justify-start gap-4 bg-white">
             <GlobeIcon className="w-6 h-6" />
             <h2 className="font-bold">Initial Minting</h2>
           </div>
-          <div className="p-4 space-y-10">
+          <div className="p-4 space-y-10 bg-[#FBFDFF]">
             <div className="flex items-center justify-between">
               <div className="flex items-center justify-start gap-2">
                 <label
