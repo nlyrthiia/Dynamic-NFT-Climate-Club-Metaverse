@@ -104,7 +104,7 @@ const Account = ({ address }) => {
           <NFTListCard
             key={index}
             cot={nft.cot}
-            neutralized={boolean(nft.neutralized)}
+            neutralized={nft.neutralized}
             imageUrl={nft.imageUrl}
             contractAddress={nft.contractAddress}
             tokenId={nft.tokenId}
@@ -265,6 +265,7 @@ const Project = ({ contractAddress }) => {
                 key={index}
                 cot={nft.cot}
                 imageUrl={nft.imageUrl}
+                neutralized={nft.neutralized}
                 contractAddress={contractAddress}
                 tokenId={index + 1}
               />
