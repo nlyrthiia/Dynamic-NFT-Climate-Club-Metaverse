@@ -84,7 +84,7 @@ export const getNFTsOfUser = async () => {
     }
     return results;
   } catch (e) {
-    toast.error("Error getting NFTs of user");
+    // toast.error("Error getting NFTs of user");
   }
 };
 
