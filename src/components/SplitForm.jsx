@@ -7,9 +7,7 @@ import { useRecoilState } from "recoil";
 import { allNFTState, ownedNFTsState } from "../atoms/nftState";
 import { splitNFT } from "../library";
 
-const SplitForm = ({ cot, tokenId }) => {
-  const [allNFTs, setAllNFTs] = useRecoilState(allNFTState);
-  const [ownedNFTs, setOwnedNFTs] = useRecoilState(ownedNFTsState);
+const SplitForm = ({ cot, tokenId, getTokenInfo }) => {
   const [inputFields, setInputFields] = useState([
     { cot: "", cot_unit_price: "" },
   ]);
@@ -22,7 +20,7 @@ const SplitForm = ({ cot, tokenId }) => {
     let newfield = { cot: "", cot_unit_price: "" };
     setInputFields([...inputFields, newfield]);
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let totalCot = inputFields.reduce((acc, cur) => {
       return acc + Number(cur.cot);
@@ -30,27 +28,32 @@ const SplitForm = ({ cot, tokenId }) => {
     if (totalCot !== Number(cot)) {
       return toast.error(`Total COT must be ${cot}`);
     }
-    let count = allNFTs.length;
     let nftArray = inputFields.map((field) => {
       if (Number(field.cot) <= 8000 && Number(field.cot) > 5333) {
-        return lv1NFT[Math.floor(Math.random() * 20)];
+        return {
+          ...lv1NFT[Math.floor(Math.random() * 10)],
+          cot: Number(field.cot),
+          neutralized: false,
+        };
       } else if (Number(field.cot) <= 5333 && Number(field.cot) > 2666) {
-        return lv2NFT[Math.floor(Math.random() * 10)];
+        return {
+          ...lv2NFT[Math.floor(Math.random() * 10)],
+          cot: Number(field.cot),
+          neutralized: false,
+        };
       } else {
-        return lv3NFT[Math.floor(Math.random() * 10)];
+        return {
+          ...lv3NFT[Math.floor(Math.random() * 10)],
+          cot: Number(field.cot),
+          neutralized: false,
+        };
       }
     });
     try {
-      splitNFT(tokenId, nftArray);
-      setAllNFTs([...allNFTs, ...nftArray]);
-      setOwnedNFTs([
-        ...ownedNFTs,
-        ...nftArray.map((nft, index) => ({
-          tokenId: count + index + 1,
-          ...nft,
-        })),
-      ]);
+      await splitNFT(tokenId, nftArray);
+      getTokenInfo();
       toast.success("Successfully split NFT");
+      toast.clearWaitingQueue();
     } catch (e) {
       toast.error("Something went wrong");
     }

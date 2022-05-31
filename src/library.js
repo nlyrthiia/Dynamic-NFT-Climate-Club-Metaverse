@@ -1,12 +1,14 @@
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 
-const contractAddress = "0xE813dc876Ce3882543CB6B2F1Cb39A7AEF29C31D";
+const contractAddress = "0x2207168986b174031131640628b6fF13d1908AB0";
+const initialNFTAmount = 100;
+
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 
 const nftInfo =
-  "(string background,string wing,string body,string hat,string eye,string sdg,string imageUrl,uint256 cot,bool neutralized)";
+  "(string imageUrl,string background,string wing,string body,string hat,string eye,string sdg,uint256 cot,bool neutralized)";
 
 const contractAbi = [
   `function split(uint256 tokenId, ${nftInfo}[] memory nftArray)`,
@@ -15,6 +17,7 @@ const contractAbi = [
   `function getNFTInfo(uint256 tokenId) view returns (${nftInfo} memory nftInfo)`,
   `function ownerOf(uint256 tokenId) view returns (address)`,
   `function getTokensOfAddress(address _sender) view returns (uint256[] memory)`,
+  `function childNFTs() view returns(${nftInfo}[] memory)`,
 ];
 
 const contract = new ethers.Contract(contractAddress, contractAbi, signer);
@@ -25,6 +28,27 @@ export const getOwner = async (tokenId) => {
     return owner;
   } catch (e) {
     return null;
+  }
+};
+
+export const getChildNFTInfos = async () => {
+  try {
+    const childNFTInfos = await contract.childNFTs();
+    const infos = childNFTInfos.map((info, index) => ({
+      tokenId: initialNFTAmount + index + 1,
+      background: info[1],
+      wing: info[2],
+      body: info[3],
+      hat: info[4],
+      eye: info[5],
+      sdg: info[6],
+      imageUrl: info[0],
+      cot: info[7].toNumber(),
+      neutralized: info[8],
+    }));
+    return infos;
+  } catch (e) {
+    toast.error("Failed to get child NFTs");
   }
 };
 
@@ -43,13 +67,13 @@ export const getNFTsOfUser = async () => {
       results.push({
         tokenId: tokenId.toNumber(),
         contractAddress,
-        imageUrl: nftInfo[6],
-        background: nftInfo[0],
-        wing: nftInfo[1],
-        body: nftInfo[2],
-        hat: nftInfo[3],
-        eye: nftInfo[4],
-        sdg: nftInfo[5],
+        imageUrl: nftInfo[0],
+        background: nftInfo[1],
+        wing: nftInfo[2],
+        body: nftInfo[3],
+        hat: nftInfo[4],
+        eye: nftInfo[5],
+        sdg: nftInfo[6],
         cot: nftInfo[7].toNumber(),
         neutralized: nftInfo[8],
       });

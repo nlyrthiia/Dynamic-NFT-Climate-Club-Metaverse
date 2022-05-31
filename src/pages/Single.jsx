@@ -26,8 +26,14 @@ import {
 } from "../components";
 import chart from "../assets/chart.png";
 import WalletContext from "../context/WalletContext";
-import { mintNFT, neutralize, getOwner } from "../library";
-import { collections } from "../data";
+import {
+  mintNFT,
+  neutralize,
+  getOwner,
+  getChildNFTInfos,
+  getNFTInfo,
+} from "../library";
+import { collections, initialNFTs } from "../data";
 import { toast } from "react-toastify";
 import { useRecoilState } from "recoil";
 import { allNFTState, ownedNFTsState } from "../atoms/nftState";
@@ -44,21 +50,35 @@ const PropertyCard = ({ name, value }) => {
 const neutralizedImageUrl = "https://i.imgur.com/qQqxQZQ.png";
 
 const Single = () => {
-  const [allNFTs, setAllNFT] = useRecoilState(allNFTState);
-  const [owner, setOwner] = useState("");
   const { contractAddress, tokenId } = useParams();
+  const [allNFTs, setAllNFTs] = useRecoilState(allNFTState);
+  const [owner, setOwner] = useState("");
+  const [tokenInfo, setTokenInfo] = useState(allNFTs[tokenId]);
   const { walletInfo } = useContext(WalletContext);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalContext, setModalContext] = useState(null);
+
+  const getTokenInfo = async () => {
+    const info = await getNFTInfo(tokenId);
+    setTokenInfo(info);
+  };
   useEffect(() => {
     const fetchOwner = async () => {
       const _owner = await getOwner(tokenId);
       setOwner(_owner);
     };
-    if (tokenId) fetchOwner();
+    if (tokenId) {
+      fetchOwner();
+      getTokenInfo();
+    }
   }, [tokenId]);
-  const nftInfo = allNFTs[tokenId - 1];
-  console.log(nftInfo);
+  useEffect(() => {
+    const getAllNFTs = async () => {
+      const childNFTs = await getChildNFTInfos();
+      setAllNFTs([...initialNFTs, ...childNFTs]);
+    };
+    getAllNFTs();
+  }, []);
   const [collectionName, collectionInfo] = Object.entries(collections).find(
     (c) => c[1].contractAddress === contractAddress
   );
@@ -69,8 +89,9 @@ const Single = () => {
     Bloclchain: "Polygon",
     Metadata: "Frozen",
     "Creator Fees": "2.5%",
-    COT: `${nftInfo?.cot}t`,
+    COT: `${tokenInfo?.cot}t`,
   };
+  if (!allNFTs) return null;
   return (
     <div className="container mx-auto p-8 space-y-4">
       <AnimatePresence>
@@ -102,7 +123,11 @@ const Single = () => {
               </div>
             ) : (
               <div>
-                <SplitForm cot={nftInfo?.cot} tokenId={tokenId} />
+                <SplitForm
+                  cot={tokenInfo.cot}
+                  tokenId={tokenId}
+                  getTokenInfo={getTokenInfo}
+                />
               </div>
             )}
           </Modal>
@@ -110,7 +135,7 @@ const Single = () => {
       </AnimatePresence>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-4">
-          <SingleNFTCard imageUrl={nftInfo?.imageUrl} />
+          {tokenInfo && <SingleNFTCard imageUrl={tokenInfo?.imageUrl} />}
           <div className="rounded-xl border border-gray-200">
             <div className="p-4 border-b border-gray-200">
               <h2 className="font-bold">
@@ -171,7 +196,7 @@ const Single = () => {
                           toast.clearWaitingQueue();
                           return;
                         }
-                        await mintNFT(tokenId, nftInfo);
+                        await mintNFT(tokenId, tokenInfo);
                         let _owner = await getOwner(tokenId);
                         setOwner(_owner);
                       }}
@@ -233,8 +258,8 @@ const Single = () => {
           </Accordion>
           <Accordion title="Properties" Icon={ChevronDownIcon}>
             <div className="p-4 grid grid-cols-3 gap-4">
-              {nftInfo &&
-                Object.entries(nftInfo).map((attribute, index) => {
+              {tokenInfo &&
+                Object.entries(tokenInfo).map((attribute, index) => {
                   if (attribute[0] === "imageUrl") return null;
                   return (
                     <PropertyCard

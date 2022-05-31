@@ -1,21 +1,22 @@
 import React from "react";
 import { EyeIcon, HeartIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-
-import { allNFTState } from "../atoms/nftState";
 
 const status = ["NEW", "BUY NOW", "ON AUCTION", "HAS OFFERS"];
 
-const NFTListCard = ({ cot, contractAddress, tokenId, collectionName }) => {
+const NFTListCard = ({
+  cot,
+  contractAddress,
+  tokenId,
+  collectionName,
+  imageUrl,
+}) => {
   const index = Math.floor(Math.random() * 4);
-  const allNFTs = useRecoilValue(allNFTState);
-  const info = allNFTs[tokenId - 1];
   return (
     <div className="rounded-xl shadow-md overflow-hidden">
       <Link to={`/assets/${contractAddress}/${tokenId}`}>
         <img
-          src={`http://arweave.net/${info.imageUrl.substring(5)}`}
+          src={`http://arweave.net/${imageUrl.substring(5)}`}
           alt=""
           className="w-full h-auto object-cover"
         />
