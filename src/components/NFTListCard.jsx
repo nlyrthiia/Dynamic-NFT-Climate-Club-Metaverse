@@ -2,6 +2,8 @@ import React from "react";
 import { EyeIcon, HeartIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 
+import badge from "../assets/badge.png"
+
 const status = ["NEW", "BUY NOW", "ON AUCTION", "HAS OFFERS"];
 
 const NFTListCard = ({
@@ -10,16 +12,20 @@ const NFTListCard = ({
   tokenId,
   collectionName,
   imageUrl,
+  neutralized
 }) => {
   const index = Math.floor(Math.random() * 4);
   return (
     <div className="rounded-xl shadow-md overflow-hidden">
       <Link to={`/assets/${contractAddress}/${tokenId}`}>
-        <img
-          src={`http://arweave.net/${imageUrl.substring(5)}`}
-          alt=""
-          className="w-full h-auto object-cover"
-        />
+        <div className="relative">
+          <img
+            src={`http://arweave.net/${imageUrl.substring(5)}`}
+            alt=""
+            className="w-full h-auto object-cover"
+          />
+          {neutralized && (<img src={badge} alt="" className="absolute top-0 left-0 w-full h-full" />)}
+        </div>
         <div className="p-4 grid grid-cols-2 text-sm border-b border-gray-200 relative">
           <div className="flex flex-col items-start justify-start gap-2">
             <p className="font-semibold text-lg">{collectionName}</p>
