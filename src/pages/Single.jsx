@@ -47,8 +47,6 @@ const PropertyCard = ({ name, value }) => {
   );
 };
 
-const neutralizedImageUrl = "https://i.imgur.com/qQqxQZQ.png";
-
 const Single = () => {
   const { contractAddress, tokenId } = useParams();
   const [allNFTs, setAllNFTs] = useRecoilState(allNFTState);
@@ -73,18 +71,18 @@ const Single = () => {
   useEffect(() => {
     const getAllNFTs = async () => {
       const childNFTs = await getChildNFTInfos();
-      setAllNFTs([...initialNFTs, ...childNFTs]);
+      if (childNFTs) setAllNFTs([...initialNFTs, ...childNFTs]);
     };
     getAllNFTs();
   }, []);
 
   useEffect(() => {
     const getInfo = async () => {
-      let tokenInfo = await getTokenInfo();
-      if (!tokenInfo.imageUrl) {
-        setTokenInfo(allNFTs[tokenId - 1]);
+      let info = await getTokenInfo();
+      if (!info.imageUrl) {
+        setTokenInfo({ ...allNFTs[tokenId - 1] });
       } else {
-        setTokenInfo(tokenInfo);
+        setTokenInfo({ ...info });
       }
     };
     getInfo();
@@ -103,6 +101,7 @@ const Single = () => {
     COT: `${tokenInfo?.cot}t`,
   };
   if (!tokenInfo) return null;
+  console.log(tokenInfo);
   return (
     <div className="container mx-auto p-8 space-y-4">
       <AnimatePresence>
@@ -126,7 +125,9 @@ const Single = () => {
                       toast.clearWaitingQueue();
                       return;
                     }
-                    neutralize(tokenId, neutralizedImageUrl);
+                    setModalIsOpen(false);
+                    neutralize(tokenId);
+                    setRefresh((prev) => !prev);
                   }}
                 >
                   Confirm
@@ -147,7 +148,12 @@ const Single = () => {
       </AnimatePresence>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-4">
-          {tokenInfo && <SingleNFTCard imageUrl={tokenInfo?.imageUrl} />}
+          {tokenInfo && (
+            <SingleNFTCard
+              imageUrl={tokenInfo.imageUrl}
+              neutralized={Boolean(tokenInfo.neutralized)}
+            />
+          )}
           <div className="rounded-xl border border-gray-200">
             <div className="p-4 border-b border-gray-200">
               <h2 className="font-bold">

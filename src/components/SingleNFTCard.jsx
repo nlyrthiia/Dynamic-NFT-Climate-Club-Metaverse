@@ -2,11 +2,20 @@ import React from "react";
 import { EyeIcon, SwitchHorizontalIcon } from "@heroicons/react/solid";
 import { HeartIcon } from "@heroicons/react/outline";
 
-const SingleNFTCard = ({ imageUrl }) => {
+import badge from "../assets/badge.png";
+
+const SingleNFTCard = ({ imageUrl, neutralized }) => {
   return (
     <div className="h-auto border border-gray-200 shadow-lg rounded-xl">
-      <div className="border-b border-gray-200">
+      <div className="border-b border-gray-200 relative">
         <img src={`http://arweave.net/${imageUrl.substring(5)}`} alt="" />
+        {neutralized && (
+          <img
+            src={badge}
+            alt=""
+            className="absolute top-0 left-0 w-full h-full"
+          />
+        )}
       </div>
       <div className="p-4 flex items-center justify-between">
         <p>Designer F</p>

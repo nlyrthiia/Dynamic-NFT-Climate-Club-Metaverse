@@ -1,18 +1,18 @@
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 
-const contractAddress = "0x6ee0649Bbd94250AFDAD81E967019EF2efAaF0d5";
+const contractAddress = "0x96dF9B3693011b55C2847aF075121Ce276b4148E";
 const initialNFTAmount = 100;
 
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 
 const nftInfo =
-  "(string imageUrl,string background,string wing,string body,string hat,string eye,string sdg,uint256 cot,bool neutralized)";
+  "(string imageUrl,string background,string wing,string body,string hat,string eye,string sdg,uint256 cot,bool )";
 
 const contractAbi = [
   `function split(uint256 tokenId, ${nftInfo}[] memory nftArray)`,
-  `function neutralize(uint256 tokenId, string memory imageUrl)`,
+  `function neutralize(uint256 tokenId)`,
   `function mint(uint256 tokenId, address to, ${nftInfo} memory nftInfo)`,
   `function getNFTInfo(uint256 tokenId) view returns (${nftInfo} memory nftInfo)`,
   `function ownerOf(uint256 tokenId) view returns (address)`,
@@ -58,38 +58,50 @@ export const getChildNFTInfos = async () => {
 
 export const getNFTInfo = async (tokenId) => {
   const nftInfo = await contract.getNFTInfo(tokenId);
-  return nftInfo;
+  return {
+    imageUrl: nftInfo[0],
+    background: nftInfo[1],
+    wing: nftInfo[2],
+    body: nftInfo[3],
+    hat: nftInfo[4],
+    eye: nftInfo[5],
+    sdg: nftInfo[6],
+    cot: nftInfo[7].toNumber(),
+    neutralized: nftInfo[8],
+  };
 };
 
-export const getNFTsOfUser = async () => {
+export const getNFTsOfUser = async (address) => {
   try {
     let results = [];
-    const tokenIds = await contract.getTokensOfAddress(signer.getAddress());
+    const tokenIds = await contract.getTokensOfAddress(address);
     for (let i = 0; i < tokenIds.length; i++) {
       const tokenId = tokenIds[i];
       const nftInfo = await getNFTInfo(tokenId);
+      console.log(nftInfo);
       results.push({
         tokenId: tokenId.toNumber(),
         contractAddress,
-        imageUrl: nftInfo[0],
-        background: nftInfo[1],
-        wing: nftInfo[2],
-        body: nftInfo[3],
-        hat: nftInfo[4],
-        eye: nftInfo[5],
-        sdg: nftInfo[6],
-        cot: nftInfo[7].toNumber(),
-        neutralized: nftInfo[8],
+        imageUrl: nftInfo.imageUrl,
+        background: nftInfo.background,
+        wing: nftInfo.wing,
+        body: nftInfo.body,
+        hat: nftInfo.hat,
+        eye: nftInfo.eye,
+        sdg: nftInfo.sdg,
+        cot: nftInfo.cot,
+        neutralized: nftInfo.neutralized,
       });
     }
     return results;
   } catch (e) {
-    // toast.error("Error getting NFTs of user");
+    console.log(e);
+    toast.error("Error getting NFTs of user");
   }
 };
 
-export const neutralize = async (tokenId, imageUrl) => {
-  const tx = await contract.neutralize(tokenId, imageUrl);
+export const neutralize = async (tokenId) => {
+  const tx = await contract.neutralize(tokenId);
   await tx.wait();
   toast.success("Neutralized!");
 };
