@@ -101,7 +101,6 @@ const Single = () => {
     COT: `${tokenInfo?.cot}t`,
   };
   if (!tokenInfo) return null;
-  console.log(tokenInfo);
   return (
     <div className="container mx-auto p-8 space-y-4">
       <AnimatePresence>

@@ -34,7 +34,6 @@ export const getOwner = async (tokenId) => {
 export const getChildNFTInfos = async () => {
   try {
     const childNFTInfos = await contract.childNFTs();
-    console.log(childNFTInfos);
     if (childNFTInfos.length) {
       const infos = childNFTInfos.map((info, index) => ({
         tokenId: initialNFTAmount + index + 1,
@@ -78,7 +77,6 @@ export const getNFTsOfUser = async (address) => {
     for (let i = 0; i < tokenIds.length; i++) {
       const tokenId = tokenIds[i];
       const nftInfo = await getNFTInfo(tokenId);
-      console.log(nftInfo);
       results.push({
         tokenId: tokenId.toNumber(),
         contractAddress,
@@ -95,7 +93,6 @@ export const getNFTsOfUser = async (address) => {
     }
     return results;
   } catch (e) {
-    console.log(e);
     toast.error("Error getting NFTs of user");
   }
 };
