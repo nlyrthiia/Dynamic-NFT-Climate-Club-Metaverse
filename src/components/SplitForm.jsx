@@ -7,7 +7,7 @@ import { useRecoilState } from "recoil";
 import { allNFTState, ownedNFTsState } from "../atoms/nftState";
 import { splitNFT } from "../library";
 
-const SplitForm = ({ cot, tokenId, getTokenInfo }) => {
+const SplitForm = ({ cot, tokenId, setRefresh }) => {
   const [inputFields, setInputFields] = useState([
     { cot: "", cot_unit_price: "" },
   ]);
@@ -51,7 +51,7 @@ const SplitForm = ({ cot, tokenId, getTokenInfo }) => {
     });
     try {
       await splitNFT(tokenId, nftArray);
-      getTokenInfo();
+      setRefresh(true);
       toast.success("Successfully split NFT");
       toast.clearWaitingQueue();
     } catch (e) {

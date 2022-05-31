@@ -20,7 +20,7 @@ const Home = () => {
       <div className="container mx-auto h-full grid grid-cols-2 gap-4 ">
         <section className="p-10 pt-20 flex flex-col justify-start items-start space-y-4">
           <div>
-            <h1 className="text-6xl leading-normal mb-6">
+            <h1 className="text-5xl leading-normal mb-4">
               Dynamic NFT Climate Club{" "}
               <strong className="text-[#73c000]">Metaverse</strong>
             </h1>

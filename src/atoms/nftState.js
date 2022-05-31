@@ -6,6 +6,6 @@ export const ownedNFTsState = atom({
 });
 
 export const allNFTState = atom({
-  key: "initialNFTState",
+  key: "allNFTState",
   default: [],
 });
