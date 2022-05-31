@@ -29,8 +29,10 @@ const Account = ({ address }) => {
   const [ownedNFTs, setOwnedNFTs] = useRecoilState(ownedNFTsState);
   useEffect(() => {
     const getOwnedNFTs = async () => {
-      const ownedNFTs = await getNFTsOfUser(walletInfo.address);
-      setOwnedNFTs(ownedNFTs);
+      const nfts = await getNFTsOfUser(walletInfo.address);
+      if (nfts) {
+        setOwnedNFTs([...nfts]);
+      }
     };
     getOwnedNFTs();
   }, [walletInfo.address]);
@@ -98,16 +100,15 @@ const Account = ({ address }) => {
         </div>
       </div>
       <div className="grid grid-cols-5 p-8 px-10 gap-8 mx-auto max-w-[1920px]">
-        {ownedNFTs &&
-          ownedNFTs.map((nft, index) => (
-            <NFTListCard
-              key={index}
-              cot={nft.cot}
-              imageUrl={nft.imageUrl}
-              contractAddress={nft.contractAddress}
-              tokenId={nft.tokenId}
-            />
-          ))}
+        {ownedNFTs.map((nft, index) => (
+          <NFTListCard
+            key={index}
+            cot={nft.cot}
+            imageUrl={nft.imageUrl}
+            contractAddress={nft.contractAddress}
+            tokenId={nft.tokenId}
+          />
+        ))}
       </div>
     </>
   );

@@ -50,8 +50,8 @@ const SplitForm = ({ cot, tokenId, setRefresh, setModalIsOpen }) => {
       }
     });
     try {
-      await splitNFT(tokenId, nftArray);
       setModalIsOpen(false);
+      await splitNFT(tokenId, nftArray);
       setRefresh((prev) => !prev);
       toast.success("Successfully split NFT");
       toast.clearWaitingQueue();
