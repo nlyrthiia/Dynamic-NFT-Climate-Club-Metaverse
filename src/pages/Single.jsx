@@ -79,18 +79,15 @@ const Single = () => {
   }, []);
 
   useEffect(() => {
-    if (refresh) {
-      const getInfo = async () => {
-        let tokenInfo = await getTokenInfo();
-        if (!tokenInfo.imageUrl) {
-          setTokenInfo(allNFTs[tokenId - 1]);
-        } else {
-          setTokenInfo(tokenInfo);
-        }
-      };
-      getInfo();
-      setRefresh(false);
-    }
+    const getInfo = async () => {
+      let tokenInfo = await getTokenInfo();
+      if (!tokenInfo.imageUrl) {
+        setTokenInfo(allNFTs[tokenId - 1]);
+      } else {
+        setTokenInfo(tokenInfo);
+      }
+    };
+    getInfo();
   }, [tokenId, allNFTs, refresh]);
 
   const [collectionName, collectionInfo] = Object.entries(collections).find(
@@ -141,6 +138,7 @@ const Single = () => {
                   cot={tokenInfo.cot}
                   tokenId={tokenId}
                   setRefresh={setRefresh}
+                  setModalIsOpen={setModalIsOpen}
                 />
               </div>
             )}
