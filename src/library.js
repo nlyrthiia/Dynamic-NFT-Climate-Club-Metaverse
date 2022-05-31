@@ -34,21 +34,25 @@ export const getOwner = async (tokenId) => {
 export const getChildNFTInfos = async () => {
   try {
     const childNFTInfos = await contract.childNFTs();
-    const infos = childNFTInfos.map((info, index) => ({
-      tokenId: initialNFTAmount + index + 1,
-      background: info[1],
-      wing: info[2],
-      body: info[3],
-      hat: info[4],
-      eye: info[5],
-      sdg: info[6],
-      imageUrl: info[0],
-      cot: info[7].toNumber(),
-      neutralized: info[8],
-    }));
-    return infos;
+    console.log(childNFTInfos);
+    if (childNFTInfos.length) {
+      const infos = childNFTInfos.map((info, index) => ({
+        tokenId: initialNFTAmount + index + 1,
+        background: info[1],
+        wing: info[2],
+        body: info[3],
+        hat: info[4],
+        eye: info[5],
+        sdg: info[6],
+        imageUrl: info[0],
+        cot: info[7].toNumber(),
+        neutralized: info[8],
+      }));
+      return infos;
+    }
+    return null;
   } catch (e) {
-    toast.error("Failed to get child NFTs");
+    // toast.error("Failed to get child NFTs");
   }
 };
 

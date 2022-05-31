@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-
+import { initialNFTs } from "../data";
 export const ownedNFTsState = atom({
   key: "ownedNFTsState",
   default: [],
@@ -7,5 +7,5 @@ export const ownedNFTsState = atom({
 
 export const allNFTState = atom({
   key: "allNFTState",
-  default: [],
+  default: [...initialNFTs],
 });

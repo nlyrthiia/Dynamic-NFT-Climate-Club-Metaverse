@@ -119,8 +119,7 @@ const Project = ({ contractAddress }) => {
   useEffect(() => {
     const getAllNFTs = async () => {
       const childNFTs = await getChildNFTInfos();
-      console.log(childNFTs);
-      setAllNFTs([...initialNFTs, ...childNFTs]);
+      if (childNFTs) setAllNFTs([...initialNFTs, ...childNFTs]);
     };
     getAllNFTs();
   }, []);

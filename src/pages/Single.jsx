@@ -212,6 +212,7 @@ const Single = () => {
                         }
                         await mintNFT(tokenId, tokenInfo);
                         toast.success("Successfully minted NFT");
+                        toast.clearWaitingQueue();
                         let _owner = await getOwner(tokenId);
                         setOwner(_owner);
                       }}
