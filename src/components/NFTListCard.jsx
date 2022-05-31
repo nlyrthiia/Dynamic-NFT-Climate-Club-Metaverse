@@ -1,21 +1,28 @@
 import React from "react";
 import { EyeIcon, HeartIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 
-import example from "../assets/nft/lv1/02.webp";
+import { allNFTState } from "../atoms/nftState";
 
 const status = ["NEW", "BUY NOW", "ON AUCTION", "HAS OFFERS"];
 
-const NFTListCard = ({ cot, contractAddress, tokenId }) => {
+const NFTListCard = ({ cot, contractAddress, tokenId, collectionName }) => {
   const index = Math.floor(Math.random() * 4);
+  const allNFTs = useRecoilValue(allNFTState);
+  const info = allNFTs[tokenId - 1];
   return (
     <div className="rounded-xl shadow-md overflow-hidden">
       <Link to={`/assets/${contractAddress}/${tokenId}`}>
-        <img src={example} alt="" className="w-full h-auto object-cover" />
+        <img
+          src={`http://arweave.net/${info.imageUrl.substring(5)}`}
+          alt=""
+          className="w-full h-auto object-cover"
+        />
         <div className="p-4 grid grid-cols-2 text-sm border-b border-gray-200 relative">
           <div className="flex flex-col items-start justify-start gap-2">
-            <p className="font-semibold text-lg">Project A</p>
-            <p className="font-semibold text-lg">Name xxx</p>
+            <p className="font-semibold text-lg">{collectionName}</p>
+            <p className="font-semibold text-lg">#{tokenId}</p>
           </div>
           <div className="flex flex-col items-end justify-between gap-2">
             <div className="flex flex-col items-end justify-center">

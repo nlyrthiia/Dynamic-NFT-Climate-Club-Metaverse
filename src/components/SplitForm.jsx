@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import { PlusCircleIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
 
-const SplitForm = ({ cot }) => {
+import { lv1NFT, lv2NFT, lv3NFT } from "../data";
+import { useRecoilState } from "recoil";
+import { allNFTState, ownedNFTsState } from "../atoms/nftState";
+import { splitNFT } from "../library";
+
+const SplitForm = ({ cot, tokenId }) => {
+  const [allNFTs, setAllNFTs] = useRecoilState(allNFTState);
+  const [ownedNFTs, setOwnedNFTs] = useRecoilState(ownedNFTsState);
   const [inputFields, setInputFields] = useState([
     { cot: "", cot_unit_price: "" },
   ]);
@@ -21,7 +28,31 @@ const SplitForm = ({ cot }) => {
       return acc + Number(cur.cot);
     }, 0);
     if (totalCot !== Number(cot)) {
-      toast.error(`Total COT must be ${cot}`);
+      return toast.error(`Total COT must be ${cot}`);
+    }
+    let count = allNFTs.length;
+    let nftArray = inputFields.map((field) => {
+      if (Number(field.cot) <= 8000 && Number(field.cot) > 5333) {
+        return lv1NFT[Math.floor(Math.random() * 20)];
+      } else if (Number(field.cot) <= 5333 && Number(field.cot) > 2666) {
+        return lv2NFT[Math.floor(Math.random() * 10)];
+      } else {
+        return lv3NFT[Math.floor(Math.random() * 10)];
+      }
+    });
+    try {
+      splitNFT(tokenId, nftArray);
+      setAllNFTs([...allNFTs, ...nftArray]);
+      setOwnedNFTs([
+        ...ownedNFTs,
+        ...nftArray.map((nft, index) => ({
+          tokenId: count + index + 1,
+          ...nft,
+        })),
+      ]);
+      toast.success("Successfully split NFT");
+    } catch (e) {
+      toast.error("Something went wrong");
     }
   };
   return (

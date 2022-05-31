@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   ChevronDownIcon,
@@ -26,70 +26,42 @@ import {
 } from "../components";
 import chart from "../assets/chart.png";
 import WalletContext from "../context/WalletContext";
+import { mintNFT, neutralize, getOwner } from "../library";
+import { collections } from "../data";
+import { toast } from "react-toastify";
+import { useRecoilState } from "recoil";
+import { allNFTState, ownedNFTsState } from "../atoms/nftState";
 
 const PropertyCard = ({ name, value }) => {
   return (
     <div className="rounded-lg border border-gray-200 p-2 flex flex-col items-center justify-around text-sm gap-3">
       <p className="text-blue-500">{name}</p>
-      <p className="font-semibold">{value}</p>
+      <p className="font-semibold">{value.toString()}</p>
     </div>
   );
 };
 
+const neutralizedImageUrl = "https://i.imgur.com/qQqxQZQ.png";
+
 const Single = () => {
+  const [allNFTs, setAllNFT] = useRecoilState(allNFTState);
+  const [owner, setOwner] = useState("");
   const { contractAddress, tokenId } = useParams();
   const { walletInfo } = useContext(WalletContext);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalContext, setModalContext] = useState(null);
-
-  const owner = "0x9c8c9f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f";
-  const metadata = {
-    name: "Dave Starbelly",
-    description:
-      "Friendly OpenSea Creature that enjoys long swims in the ocean.",
-    external_url: "https://openseacreatures.io/3",
-    image: require("../assets/nft/lv3/50.webp"),
-    attributes: [
-      {
-        trait_type: "color",
-        value: "Starfish",
-      },
-      {
-        trait_type: "feet",
-        value: "Big",
-      },
-      {
-        trait_type: "legs",
-        value: "Surprised",
-      },
-      {
-        trait_type: "clothes",
-        value: "Surprised",
-      },
-      {
-        trait_type: "background",
-        value: "Surprised",
-      },
-      {
-        trait_type: "certification",
-        value: "Surprised",
-      },
-      {
-        trait_type: "SDG",
-        value: "Surprised",
-      },
-      {
-        trait_type: "neutralized",
-        value: "Surprised",
-      },
-    ],
-    cotInfo: {
-      "Amount(t)": 1,
-      Location: "Sichuan, China",
-      Registry: "Gold Standard",
-      Methology: "COM PoA 2898GS 1239",
-    },
-  };
+  useEffect(() => {
+    const fetchOwner = async () => {
+      const _owner = await getOwner(tokenId);
+      setOwner(_owner);
+    };
+    if (tokenId) fetchOwner();
+  }, [tokenId]);
+  const nftInfo = allNFTs[tokenId - 1];
+  console.log(nftInfo);
+  const [collectionName, collectionInfo] = Object.entries(collections).find(
+    (c) => c[1].contractAddress === contractAddress
+  );
   const details = {
     "Contract Address": contractAddress,
     "Token ID": tokenId,
@@ -97,7 +69,7 @@ const Single = () => {
     Bloclchain: "Polygon",
     Metadata: "Frozen",
     "Creator Fees": "2.5%",
-    COT: `${metadata.cotInfo.Amount}t`,
+    COT: `${nftInfo?.cot}t`,
   };
   return (
     <div className="container mx-auto p-8 space-y-4">
@@ -114,13 +86,23 @@ const Single = () => {
                   Have you used the Carbon Offset (COT) in this DNFT to help
                   with carbon neutrality？
                 </p>
-                <button className="p-2 px-4 rounded-xl bg-red-500 text-white">
+                <button
+                  className="p-2 px-4 rounded-xl bg-red-500 text-white"
+                  onClick={() => {
+                    if (!walletInfo.address) {
+                      toast.error("Please connect to your wallet");
+                      toast.clearWaitingQueue();
+                      return;
+                    }
+                    neutralize(tokenId, neutralizedImageUrl);
+                  }}
+                >
                   Confirm
                 </button>
               </div>
             ) : (
               <div>
-                <SplitForm cot={metadata.cotInfo["Amount(t)"]} />
+                <SplitForm cot={nftInfo?.cot} tokenId={tokenId} />
               </div>
             )}
           </Modal>
@@ -128,7 +110,7 @@ const Single = () => {
       </AnimatePresence>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-4">
-          <SingleNFTCard imageUrl={metadata.image} />
+          <SingleNFTCard imageUrl={nftInfo?.imageUrl} />
           <div className="rounded-xl border border-gray-200">
             <div className="p-4 border-b border-gray-200">
               <h2 className="font-bold">
@@ -153,7 +135,8 @@ const Single = () => {
                 </div>
               </div>
               <div className="flex items-center justify-end gap-6">
-                {owner === walletInfo.address ? (
+                {/* owner && owner === walletInfo.address */}
+                {owner && owner === walletInfo.address ? (
                   <>
                     <button
                       className="p-4 rounded-xl bg-[#d5f4ce] font-bold border border-[#73c000]"
@@ -180,7 +163,19 @@ const Single = () => {
                       <BookmarkIcon className="w-6 h-6" />
                       <p>Make Offer</p>
                     </button>
-                    <button className="flex items-center justify-center gap-4 p-4 rounded-xl bg-[#73ca67] font-bold">
+                    <button
+                      className="flex items-center justify-center gap-4 p-4 rounded-xl bg-[#73ca67] font-bold"
+                      onClick={async () => {
+                        if (!walletInfo.address) {
+                          toast.error("Please connect to your wallet");
+                          toast.clearWaitingQueue();
+                          return;
+                        }
+                        await mintNFT(tokenId, nftInfo);
+                        let _owner = await getOwner(tokenId);
+                        setOwner(_owner);
+                      }}
+                    >
                       <DatabaseIcon className="w-6 h-6" />
                       <p>Buy Now</p>
                     </button>
@@ -213,14 +208,18 @@ const Single = () => {
         </div>
         <div className="space-y-4">
           <h1 className="text-3xl font-bold">
-            {metadata.name} {`#${tokenId}`}
+            {collectionName} {`#${tokenId}`}
           </h1>
-          <p className="font-semibold">{metadata.name}</p>
+          <p className="font-semibold">{collectionInfo.title}</p>
           <p>
             Owned by{" "}
-            <Link to={`/account/${owner}`}>
-              <span className="text-[#73c000]">{owner}</span>
-            </Link>
+            {owner ? (
+              <Link to={`/account/${owner}`}>
+                <span className="text-[#73c000]">{owner}</span>
+              </Link>
+            ) : (
+              <span className="text-[#73c000]">No one</span>
+            )}
           </p>
           <Accordion title="Description" Icon={MenuAlt2Icon}>
             <div className="p-4">
@@ -234,13 +233,17 @@ const Single = () => {
           </Accordion>
           <Accordion title="Properties" Icon={ChevronDownIcon}>
             <div className="p-4 grid grid-cols-3 gap-4">
-              {metadata.attributes.map((attribute, index) => (
-                <PropertyCard
-                  key={index}
-                  name={attribute.trait_type}
-                  value={attribute.value}
-                />
-              ))}
+              {nftInfo &&
+                Object.entries(nftInfo).map((attribute, index) => {
+                  if (attribute[0] === "imageUrl") return null;
+                  return (
+                    <PropertyCard
+                      key={index}
+                      name={attribute[0]}
+                      value={attribute[1]}
+                    />
+                  );
+                })}
             </div>
           </Accordion>
           <Accordion
@@ -248,15 +251,36 @@ const Single = () => {
             Icon={DatabaseIcon}
           >
             <div className="p-4 grid grid-cols-3 gap-4">
-              {Object.entries(metadata.cotInfo).map((entry, index) => (
-                <PropertyCard key={index} name={entry[0]} value={entry[1]} />
-              ))}
+              {Object.entries(collectionInfo).map((entry, index) => {
+                if (
+                  [
+                    "title",
+                    "contractAddress",
+                    "background",
+                    "creator",
+                    "cot",
+                  ].includes(entry[0])
+                ) {
+                  return null;
+                } else {
+                  return (
+                    <PropertyCard
+                      key={index}
+                      name={entry[0]}
+                      value={entry[1]}
+                    />
+                  );
+                }
+              })}
             </div>
           </Accordion>
           <Accordion title="Detail" Icon={BookOpenIcon}>
             <div className="p-4 space-y-1">
               {Object.entries(details).map((entry, index) => (
-                <div className="flex items-center justify-between text-sm">
+                <div
+                  key={index}
+                  className="flex items-center justify-between text-sm"
+                >
                   <p>{entry[0]}:</p>
                   <p>{entry[1]}</p>
                 </div>

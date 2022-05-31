@@ -3,7 +3,6 @@ import { HeartIcon, EyeIcon } from "@heroicons/react/outline";
 
 const GenerationCard = ({ generation, cot }) => {
   const [imageUrl, setImageUrl] = useState(null);
-  console.log(imageUrl);
   useEffect(() => {
     const level = cot < 10 ? "3" : cot < 50 ? "2" : "1";
     setImageUrl(require(`../assets/nft/lv${level}/02.webp`));

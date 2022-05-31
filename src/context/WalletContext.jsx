@@ -16,6 +16,17 @@ const network = {
     rpcUrls: ["https://polygon-rpc.com/"],
     blockExplorerUrls: ["https://polygonscan.com/"],
   },
+  mumbai: {
+    chainId: `0x${Number(80001).toString(16)}`,
+    chainName: "Mumbai Testnet",
+    nativeCurrency: {
+      name: "MATIC",
+      symbol: "MATIC",
+      decimals: 18,
+    },
+    rpcUrls: ["https://rpc-mumbai.maticvigil.com/"],
+    blockExplorerUrls: ["https://polygonscan.com/"],
+  },
 };
 
 export const WalletProvider = ({ children }) => {
@@ -30,10 +41,7 @@ export const WalletProvider = ({ children }) => {
 
   if (window.ethereum) {
     window.ethereum.on("chainChanged", (chainId) => {
-      if (
-        chainId.toString() !== network.polygon.chainId &&
-        walletInfo.address
-      ) {
+      if (chainId.toString() !== network.mumbai.chainId && walletInfo.address) {
         setError(`Please switch to ${network.polygon.chainName} network.`);
       } else {
         setError(null);
@@ -49,7 +57,7 @@ export const WalletProvider = ({ children }) => {
     try {
       await provider.send("wallet_addEthereumChain", [
         {
-          ...network.polygon,
+          ...network.mumbai,
         },
       ]);
     } catch (err) {
@@ -63,7 +71,7 @@ export const WalletProvider = ({ children }) => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       try {
         const { chainId } = await provider.getNetwork();
-        if (chainId.toString() !== network.polygon.chainId) {
+        if (chainId.toString() !== network.mumbai.chainId) {
           handleNetworkChange();
         }
         await provider.send("eth_requestAccounts", []);

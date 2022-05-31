@@ -6,7 +6,7 @@ const SingleNFTCard = ({ imageUrl }) => {
   return (
     <div className="h-auto border border-gray-200 shadow-lg rounded-xl">
       <div className="border-b border-gray-200">
-        <img src={imageUrl} alt="" />
+        <img src={`http://arweave.net/${imageUrl.substring(5)}`} alt="" />
       </div>
       <div className="p-4 flex items-center justify-between">
         <p>Designer F</p>

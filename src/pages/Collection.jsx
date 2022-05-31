@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { ChevronUpIcon, SearchIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
@@ -11,6 +11,7 @@ import {
   NewspaperIcon,
 } from "@heroicons/react/outline";
 import clsx from "clsx";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 import { NFTListCard } from "../components";
 import WalletContext from "../context/WalletContext";
@@ -20,9 +21,10 @@ import polygonIcon from "../assets/polygon-icon.png";
 import projectHead from "../assets/collection-head.webp";
 import projectAvatar from "../assets/collection-logo.webp";
 import bg from "../assets/bg.png";
+import { allNFTState, ownedNFTsState } from "../atoms/nftState";
+import { getNFTsOfUser } from "../library";
 
-const Account = ({ address }) => {
-  const { walletInfo } = useContext(WalletContext);
+const Account = ({ address, walletInfo }) => {
   if (!address && !walletInfo.address) {
     toast.error("Please connect to your wallet.");
     toast.clearWaitingQueue();
@@ -105,14 +107,22 @@ const Project = ({ contractAddress }) => {
           <h1 className="text-5xl font-bold">{collectionName}</h1>
           <div className="flex items-center justify-center">
             <img src={polygonIcon} alt="" className="w-10 h-10" />
-            <p className="font-semibold">{contractAddress}</p>
+            <p className="text-[#f3c000]">
+              <a
+                href={`https://mumbai.polygonscan.com/address/${contractAddress}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {contractAddress}
+              </a>
+            </p>
           </div>
         </div>
         <p>
           Created By{" "}
-          <span className="text-[#73c000]">{collectionInfo.creator}</span>
+          <span className="text-[#73c000]">{collectionInfo?.creator}</span>
         </p>
-        <p className="text-lg font-semibold">{collectionInfo.title}</p>
+        <p className="text-lg font-semibold">{collectionInfo?.title}</p>
       </div>
       <div className="flex items-center justify-evenly py-3 border-b border-gray-200 text-sm bg-white">
         <div className="flex flex-col items-center justify-center gap-4">
@@ -200,12 +210,25 @@ const Project = ({ contractAddress }) => {
 };
 
 const Collection = () => {
+  const { walletInfo } = useContext(WalletContext);
   const { address, contractAddress } = useParams();
+  const allNFTs = useRecoilValue(allNFTState);
+  const [ownedNFTs, setOwnedNFTs] = useRecoilState(ownedNFTsState);
+  useEffect(() => {
+    const getOwnedNFTs = async () => {
+      const ownedNFTs = await getNFTsOfUser(walletInfo.address);
+      setOwnedNFTs(ownedNFTs);
+      console.log(ownedNFTs);
+    };
+
+    getOwnedNFTs();
+  }, [walletInfo.address]);
+
   return (
     <div className="w-full h-screen">
       {!contractAddress ? (
         <>
-          <Account address={address} />
+          <Account address={address} walletInfo={walletInfo} />
           <div className="flex items-center justify-center mt-10">
             <div className="relative">
               <input
@@ -215,6 +238,17 @@ const Collection = () => {
               />
               <SearchIcon className="text-gray-400 w-6 h-6 absolute right-3 top-1/2 -translate-y-1/2" />
             </div>
+          </div>
+          <div className="grid grid-cols-5 p-8 px-10 gap-8 mx-auto max-w-[1920px]">
+            {ownedNFTs &&
+              ownedNFTs.map((nft, index) => (
+                <NFTListCard
+                  key={index}
+                  cot={nft.cot}
+                  contractAddress={nft.contractAddress}
+                  tokenId={nft.tokenId}
+                />
+              ))}
           </div>
         </>
       ) : (
@@ -231,16 +265,14 @@ const Collection = () => {
             </div>
           </div>
           <div className="grid grid-cols-5 p-8 px-10 gap-8 mx-auto max-w-[1920px]">
-            {Array(100)
-              .fill(8000)
-              .map((item, index) => (
-                <NFTListCard
-                  key={index}
-                  cot={item}
-                  contractAddress={contractAddress}
-                  tokenId={index}
-                />
-              ))}
+            {allNFTs.map((nft, index) => (
+              <NFTListCard
+                key={index}
+                cot={nft.cot}
+                contractAddress={contractAddress}
+                tokenId={index + 1}
+              />
+            ))}
           </div>
         </>
       )}
