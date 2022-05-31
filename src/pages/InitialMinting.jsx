@@ -12,7 +12,10 @@ const InitialMinting = () => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
   return (
-    <div style={{ backgroundImage: `url(${bg})` }}>
+    <div
+      className="bg-cover bg-no-repeat"
+      style={{ backgroundImage: `url(${bg})` }}
+    >
       <div className="h-[calc(100vh-100px)] container mx-auto pt-20">
         <h1 className="text-6xl text-center font-bold mb-24">
           Initial Minting

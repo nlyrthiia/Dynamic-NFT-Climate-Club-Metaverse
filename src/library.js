@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 
-const contractAddress = "0x2207168986b174031131640628b6fF13d1908AB0";
+const contractAddress = "0x6ee0649Bbd94250AFDAD81E967019EF2efAaF0d5";
 const initialNFTAmount = 100;
 
 const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -34,21 +34,25 @@ export const getOwner = async (tokenId) => {
 export const getChildNFTInfos = async () => {
   try {
     const childNFTInfos = await contract.childNFTs();
-    const infos = childNFTInfos.map((info, index) => ({
-      tokenId: initialNFTAmount + index + 1,
-      background: info[1],
-      wing: info[2],
-      body: info[3],
-      hat: info[4],
-      eye: info[5],
-      sdg: info[6],
-      imageUrl: info[0],
-      cot: info[7].toNumber(),
-      neutralized: info[8],
-    }));
-    return infos;
+    console.log(childNFTInfos);
+    if (childNFTInfos.length) {
+      const infos = childNFTInfos.map((info, index) => ({
+        tokenId: initialNFTAmount + index + 1,
+        background: info[1],
+        wing: info[2],
+        body: info[3],
+        hat: info[4],
+        eye: info[5],
+        sdg: info[6],
+        imageUrl: info[0],
+        cot: info[7].toNumber(),
+        neutralized: info[8],
+      }));
+      return infos;
+    }
+    return null;
   } catch (e) {
-    toast.error("Failed to get child NFTs");
+    // toast.error("Failed to get child NFTs");
   }
 };
 
@@ -80,7 +84,7 @@ export const getNFTsOfUser = async () => {
     }
     return results;
   } catch (e) {
-    toast.error("Error getting NFTs of user");
+    // toast.error("Error getting NFTs of user");
   }
 };
 

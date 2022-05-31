@@ -53,24 +53,22 @@ const Single = () => {
   const { contractAddress, tokenId } = useParams();
   const [allNFTs, setAllNFTs] = useRecoilState(allNFTState);
   const [owner, setOwner] = useState("");
-  const [tokenInfo, setTokenInfo] = useState(allNFTs[tokenId]);
+  const [refresh, setRefresh] = useState(true);
+  const [tokenInfo, setTokenInfo] = useState();
   const { walletInfo } = useContext(WalletContext);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalContext, setModalContext] = useState(null);
 
   const getTokenInfo = async () => {
     const info = await getNFTInfo(tokenId);
-    setTokenInfo(info);
+    return info;
   };
   useEffect(() => {
     const fetchOwner = async () => {
       const _owner = await getOwner(tokenId);
       setOwner(_owner);
     };
-    if (tokenId) {
-      fetchOwner();
-      getTokenInfo();
-    }
+    fetchOwner();
   }, [tokenId]);
   useEffect(() => {
     const getAllNFTs = async () => {
@@ -79,6 +77,19 @@ const Single = () => {
     };
     getAllNFTs();
   }, []);
+
+  useEffect(() => {
+    const getInfo = async () => {
+      let tokenInfo = await getTokenInfo();
+      if (!tokenInfo.imageUrl) {
+        setTokenInfo(allNFTs[tokenId - 1]);
+      } else {
+        setTokenInfo(tokenInfo);
+      }
+    };
+    getInfo();
+  }, [tokenId, allNFTs, refresh]);
+
   const [collectionName, collectionInfo] = Object.entries(collections).find(
     (c) => c[1].contractAddress === contractAddress
   );
@@ -91,7 +102,7 @@ const Single = () => {
     "Creator Fees": "2.5%",
     COT: `${tokenInfo?.cot}t`,
   };
-  if (!allNFTs) return null;
+  if (!tokenInfo) return null;
   return (
     <div className="container mx-auto p-8 space-y-4">
       <AnimatePresence>
@@ -126,7 +137,8 @@ const Single = () => {
                 <SplitForm
                   cot={tokenInfo.cot}
                   tokenId={tokenId}
-                  getTokenInfo={getTokenInfo}
+                  setRefresh={setRefresh}
+                  setModalIsOpen={setModalIsOpen}
                 />
               </div>
             )}
@@ -197,6 +209,8 @@ const Single = () => {
                           return;
                         }
                         await mintNFT(tokenId, tokenInfo);
+                        toast.success("Successfully minted NFT");
+                        toast.clearWaitingQueue();
                         let _owner = await getOwner(tokenId);
                         setOwner(_owner);
                       }}
