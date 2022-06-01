@@ -66,6 +66,7 @@ const Single = () => {
         setTokenInfo(initialNFTs[tokenId - 1])
       } else {
         setTokenInfo(info)
+        console.log(info)
       }
     }
     getInfo()
@@ -195,7 +196,7 @@ const Single = () => {
                           toast.clearWaitingQueue()
                           return
                         }
-                        await mintNFT(tokenId, tokenInfo)
+                        await mintNFT(tokenId, {...tokenInfo})
                         toast.success("Successfully minted NFT")
                         toast.clearWaitingQueue()
                         let _owner = await getOwner(tokenId)
