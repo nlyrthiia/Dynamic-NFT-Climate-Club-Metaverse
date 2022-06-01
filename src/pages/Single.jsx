@@ -78,12 +78,12 @@ const Single = () => {
 
   useEffect(() => {
     const getInfo = async () => {
-      // let info = await getTokenInfo();
-      // if (!info.imageUrl) {
+      let info = await getTokenInfo();
+      if (!info.imageUrl) {
         setTokenInfo({ ...allNFTs[tokenId - 1] });
-      // } else {
-        // setTokenInfo({ ...info });
-      // }
+      } else {
+        setTokenInfo({ ...info });
+      }
     };
     getInfo();
   }, [tokenId, allNFTs, refresh]);
