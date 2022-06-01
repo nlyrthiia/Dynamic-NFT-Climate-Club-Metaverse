@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 
-const contractAddress = "0x96dF9B3693011b55C2847aF075121Ce276b4148E";
+const contractAddress = "0x6282593203f769A6ABF81276DbFDF3b1976ac1E7";
 const initialNFTAmount = 100;
 
 const provider = new ethers.providers.Web3Provider(window.ethereum);

@@ -1490,7 +1490,7 @@ export const collections = {
     methology: "COM PoA 2898GS 1239",
   },
   Briquettes: {
-    contractAddress: "0x96dF9B3693011b55C2847aF075121Ce276b4148E",
+    contractAddress: "0x6282593203f769A6ABF81276DbFDF3b1976ac1E7",
     background: collection_b,
     title: "Sichuan Biogas Stove Development Programme",
     creator: "Feijie",
