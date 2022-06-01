@@ -3,8 +3,6 @@ import { PlusCircleIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
 
 import { lv1NFT, lv2NFT, lv3NFT } from "../data";
-import { useRecoilState } from "recoil";
-import { allNFTState, ownedNFTsState } from "../atoms/nftState";
 import { splitNFT } from "../library";
 
 const SplitForm = ({ cot, tokenId, setRefresh, setModalIsOpen }) => {

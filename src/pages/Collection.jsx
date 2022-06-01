@@ -15,14 +15,14 @@ import { useRecoilState } from "recoil";
 
 import { NFTListCard } from "../components";
 import WalletContext from "../context/WalletContext";
-import { collections, initialNFTs } from "../data";
+import { collections } from "../data";
 import avatar from "../assets/avatar.webp";
 import polygonIcon from "../assets/polygon-icon.png";
 import projectHead from "../assets/collection-head.webp";
 import projectAvatar from "../assets/collection-logo.webp";
 import bg from "../assets/bg.png";
 import { ownedNFTsState, allNFTState } from "../atoms/nftState";
-import { getNFTsOfUser, getChildNFTInfos } from "../library";
+import { getNFTsOfUser, getAllNFTs } from "../library";
 
 const Account = ({ address }) => {
   const { walletInfo } = useContext(WalletContext);
@@ -35,7 +35,7 @@ const Account = ({ address }) => {
       }
     };
     getOwnedNFTs();
-  }, [walletInfo.address]);
+  }, [walletInfo.address, setOwnedNFTs]);
   if (!address && !walletInfo.address) {
     toast.error("Please connect to your wallet.");
     toast.clearWaitingQueue();
@@ -119,12 +119,12 @@ const Project = ({ contractAddress }) => {
   const [allNFTs, setAllNFTs] = useRecoilState(allNFTState);
 
   useEffect(() => {
-    const getAllNFTs = async () => {
-      const childNFTs = await getChildNFTInfos();
-      if (childNFTs) setAllNFTs([...initialNFTs, ...childNFTs]);
+    const fetchAllNFTs = async () => {
+      let nfts = await getAllNFTs();
+      if (nfts) setAllNFTs(nfts);
     };
-    getAllNFTs();
-  }, []);
+    fetchAllNFTs();
+  }, [setAllNFTs]);
   const [moreInfo, setMoreInfo] = useState(false);
   const [collectionName, collectionInfo] = Object.entries(collections).find(
     (c) => c[1].contractAddress === contractAddress

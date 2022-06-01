@@ -30,13 +30,10 @@ import {
   mintNFT,
   neutralize,
   getOwner,
-  getChildNFTInfos,
   getNFTInfo,
 } from "../library";
 import { collections, initialNFTs } from "../data";
 import { toast } from "react-toastify";
-import { useRecoilState } from "recoil";
-import { allNFTState, ownedNFTsState } from "../atoms/nftState";
 
 const PropertyCard = ({ name, value }) => {
   return (
@@ -49,7 +46,6 @@ const PropertyCard = ({ name, value }) => {
 
 const Single = () => {
   const { contractAddress, tokenId } = useParams();
-  const [allNFTs, setAllNFTs] = useRecoilState(allNFTState);
   const [owner, setOwner] = useState("");
   const [refresh, setRefresh] = useState(true);
   const [tokenInfo, setTokenInfo] = useState();
@@ -68,25 +64,18 @@ const Single = () => {
     };
     fetchOwner();
   }, [tokenId]);
-  useEffect(() => {
-    const getAllNFTs = async () => {
-      const childNFTs = await getChildNFTInfos();
-      if (childNFTs) setAllNFTs([...initialNFTs, ...childNFTs]);
-    };
-    getAllNFTs();
-  }, []);
 
   useEffect(() => {
     const getInfo = async () => {
-      // let info = await getTokenInfo();
-      // if (!info.imageUrl) {
-        setTokenInfo({ ...allNFTs[tokenId - 1] });
-      // } else {
-        // setTokenInfo({ ...info });
-      // }
+      let info = await getTokenInfo();
+      if (!info.imageUrl) {
+        setTokenInfo(initialNFTs[tokenId - 1]);
+      } else {
+        setTokenInfo(info);
+      }
     };
     getInfo();
-  }, [tokenId, allNFTs, refresh]);
+  }, [tokenId, refresh]);
 
   const [collectionName, collectionInfo] = Object.entries(collections).find(
     (c) => c[1].contractAddress === contractAddress

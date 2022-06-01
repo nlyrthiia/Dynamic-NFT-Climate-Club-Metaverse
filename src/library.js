@@ -1,6 +1,8 @@
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 
+import { initialNFTs } from "./data";
+
 const contractAddress = "0x6282593203f769A6ABF81276DbFDF3b1976ac1E7";
 const initialNFTAmount = 100;
 
@@ -28,6 +30,25 @@ export const getOwner = async (tokenId) => {
     return owner;
   } catch (e) {
     return null;
+  }
+};
+
+export const getAllNFTs = async () => {
+  let results = [];
+  try {
+    for (let i = 1; i <= initialNFTAmount; i++) {
+      const nftInfo = await getNFTInfo(i);
+      if (!nftInfo.imageUrl) {
+        results.push(initialNFTs[i - 1]);
+      } else {
+        results.push(nftInfo);
+      }
+    }
+    const childNFTs = await getChildNFTInfos();
+    results = [...results, ...childNFTs];
+    return results;
+  } catch (e) {
+    console.log(e);
   }
 };
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { HeartIcon, EyeIcon } from "@heroicons/react/outline";
 
 const GenerationCard = ({ generation, cot }) => {
   const [imageUrl, setImageUrl] = useState(null);
