@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Navigate, useParams } from "react-router-dom";
-import { ChevronUpIcon, SearchIcon } from "@heroicons/react/outline";
-import { toast } from "react-toastify";
+import React, { useContext, useState, useEffect } from "react"
+import { Navigate, useParams } from "react-router-dom"
+import { ChevronUpIcon, SearchIcon } from "@heroicons/react/outline"
+import { toast } from "react-toastify"
 import {
   PuzzleIcon,
   EyeIcon,
@@ -9,37 +9,37 @@ import {
   MailOpenIcon,
   ShoppingBagIcon,
   NewspaperIcon,
-} from "@heroicons/react/outline";
-import clsx from "clsx";
-import { useRecoilState } from "recoil";
+} from "@heroicons/react/outline"
+import clsx from "clsx"
+import { useRecoilState } from "recoil"
 
-import { NFTListCard } from "../components";
-import WalletContext from "../context/WalletContext";
-import { collections } from "../data";
-import avatar from "../assets/avatar.webp";
-import polygonIcon from "../assets/polygon-icon.png";
-import projectHead from "../assets/collection-head.webp";
-import projectAvatar from "../assets/collection-logo.webp";
-import bg from "../assets/bg.png";
-import { ownedNFTsState, allNFTState } from "../atoms/nftState";
-import { getNFTsOfUser, getAllNFTs } from "../library";
+import { NFTListCard } from "../components"
+import WalletContext from "../context/WalletContext"
+import { collections } from "../data"
+import avatar from "../assets/avatar.webp"
+import polygonIcon from "../assets/polygon-icon.png"
+import projectHead from "../assets/collection-head.webp"
+import projectAvatar from "../assets/collection-logo.webp"
+import bg from "../assets/bg.png"
+import { ownedNFTsState, allNFTState } from "../atoms/nftState"
+import { getNFTsOfUser, getAllNFTs } from "../library"
 
 const Account = ({ address }) => {
-  const { walletInfo } = useContext(WalletContext);
-  const [ownedNFTs, setOwnedNFTs] = useRecoilState(ownedNFTsState);
+  const { walletInfo } = useContext(WalletContext)
+  const [ownedNFTs, setOwnedNFTs] = useRecoilState(ownedNFTsState)
   useEffect(() => {
     const getOwnedNFTs = async () => {
-      const nfts = await getNFTsOfUser(walletInfo.address);
+      const nfts = await getNFTsOfUser(walletInfo.address)
       if (nfts) {
-        setOwnedNFTs([...nfts]);
+        setOwnedNFTs([...nfts])
       }
-    };
-    getOwnedNFTs();
-  }, [walletInfo.address, setOwnedNFTs]);
+    }
+    getOwnedNFTs()
+  }, [walletInfo.address, setOwnedNFTs])
   if (!address && !walletInfo.address) {
-    toast.error("Please connect to your wallet.");
-    toast.clearWaitingQueue();
-    return <Navigate to="/" />;
+    toast.error("Please connect to your wallet.")
+    toast.clearWaitingQueue()
+    return <Navigate to="/" />
   }
   return (
     <>
@@ -54,12 +54,11 @@ const Account = ({ address }) => {
             <p className="font-semibold">{address ?? walletInfo.address}</p>
           </div>
           <p className="w-[1000px] text-sm text-justify">
-            （BIO）The project team visits the low-income rural households to
-            build biogas digesters and efficient biogas cookstoves for them. The
-            digester tanks are fed with animal manure, previously just
-            discharged into open pits, and convert it into clean and affordable
-            biogas to be used conveniently for cooking, heating, or lighting
-            instead of coal and firewood.
+            （BIO）The project team visits the low-income rural households to build biogas digesters
+            and efficient biogas cookstoves for them. The digester tanks are fed with animal manure,
+            previously just discharged into open pits, and convert it into clean and affordable
+            biogas to be used conveniently for cooking, heating, or lighting instead of coal and
+            firewood.
           </p>
         </div>
       </div>
@@ -112,23 +111,23 @@ const Account = ({ address }) => {
         ))}
       </div>
     </>
-  );
-};
+  )
+}
 
 const Project = ({ contractAddress }) => {
-  const [allNFTs, setAllNFTs] = useRecoilState(allNFTState);
+  const [allNFTs, setAllNFTs] = useRecoilState(allNFTState)
 
   useEffect(() => {
     const fetchAllNFTs = async () => {
-      let nfts = await getAllNFTs();
-      if (nfts) setAllNFTs(nfts);
-    };
-    fetchAllNFTs();
-  }, [setAllNFTs]);
-  const [moreInfo, setMoreInfo] = useState(false);
+      let nfts = await getAllNFTs()
+      if (nfts) setAllNFTs(nfts)
+    }
+    fetchAllNFTs()
+  }, [setAllNFTs])
+  const [moreInfo, setMoreInfo] = useState(false)
   const [collectionName, collectionInfo] = Object.entries(collections).find(
-    (c) => c[1].contractAddress === contractAddress
-  );
+    (c) => c[1].contractAddress === contractAddress,
+  )
   return (
     <>
       <div
@@ -161,8 +160,7 @@ const Project = ({ contractAddress }) => {
           </div>
         </div>
         <p>
-          Created By{" "}
-          <span className="text-[#73c000]">{collectionInfo?.creator}</span>
+          Created By <span className="text-[#73c000]">{collectionInfo?.creator}</span>
         </p>
         <p className="text-lg font-semibold">{collectionInfo?.title}</p>
       </div>
@@ -199,52 +197,43 @@ const Project = ({ contractAddress }) => {
       <div
         className={clsx(
           "overflow-hidden max-h-[500px] space-y-4 p-8 relative cursor-pointer transition-max-h duration-300 ease-in-out max-w-[1920px]",
-          !moreInfo && "max-h-[200px]"
+          !moreInfo && "max-h-[200px]",
         )}
         onClick={() => setMoreInfo((prev) => !prev)}
       >
         <ChevronUpIcon
-          className={clsx(
-            !moreInfo && "rotate-180",
-            "w-6 h-6 absolute right-8 bottom-0"
-          )}
+          className={clsx(!moreInfo && "rotate-180", "w-6 h-6 absolute right-8 bottom-0")}
         />
         <p className="font-bold">Sichuan Biogas Stove Development Programme</p>
         <p className="text-sm font-semibold">How does it work?</p>
         <p className="text-sm">
-          The project team visits the low-income rural households to build
-          biogas digesters and efficient biogas cookstoves for them. The
-          digester tanks are fed with animal manure, previously just discharged
-          into open pits, and convert it into clean and affordable biogas to be
-          used conveniently for cooking, heating, or lighting instead of coal
-          and firewood.
+          The project team visits the low-income rural households to build biogas digesters and
+          efficient biogas cookstoves for them. The digester tanks are fed with animal manure,
+          previously just discharged into open pits, and convert it into clean and affordable biogas
+          to be used conveniently for cooking, heating, or lighting instead of coal and firewood.
         </p>
         <p className="text-sm font-semibold">Why did we choose this project?</p>
         <p className="text-sm">
-          The installation of a biogas digester to handle animal manure does not
-          only reduce carbon dioxide emissions, but it also helps to improve
-          rural living conditions in many different ways. After switching to
-          biogas, the households’ disposable savings increased 40% due to saved
-          energy and fertilizer expenditures, higher agricultural output, etc.
+          The installation of a biogas digester to handle animal manure does not only reduce carbon
+          dioxide emissions, but it also helps to improve rural living conditions in many different
+          ways. After switching to biogas, the households’ disposable savings increased 40% due to
+          saved energy and fertilizer expenditures, higher agricultural output, etc.
         </p>
         <p className="text-sm font-semibold">What is my impact?</p>
         <p className="text-sm">
-          Each cookstove system built will be able to reduce 2 tons of carbon
-          emission per year, with an average lifetime over 10 years with proper
-          use and care. To date, this project has built cookstoves for 395,435
-          rural households and have reduced over 6 million tons of carbon
-          emissions.
+          Each cookstove system built will be able to reduce 2 tons of carbon emission per year,
+          with an average lifetime over 10 years with proper use and care. To date, this project has
+          built cookstoves for 395,435 rural households and have reduced over 6 million tons of
+          carbon emissions.
         </p>
         <p className="text-sm font-semibold">How do we verify the impact?</p>
         <p className="text-sm">
-          This project has been independently verified in accordance with the
-          Gold Standard for Global Goals. You can view at anytime the public
-          project page and offset credit retirement history here. The Gold
-          Standard is the globally recognized verification body that was
-          established in 2003 by WWF and other international NGOs to ensure
-          projects that reduced carbon emissions featured the highest levels of
-          environmental integrity and also contributed to sustainable
-          development.
+          This project has been independently verified in accordance with the Gold Standard for
+          Global Goals. You can view at anytime the public project page and offset credit retirement
+          history here. The Gold Standard is the globally recognized verification body that was
+          established in 2003 by WWF and other international NGOs to ensure projects that reduced
+          carbon emissions featured the highest levels of environmental integrity and also
+          contributed to sustainable development.
         </p>
       </div>
       <div className="flex items-center justify-center mt-10">
@@ -269,15 +258,15 @@ const Project = ({ contractAddress }) => {
                 contractAddress={contractAddress}
                 tokenId={index + 1}
               />
-            );
+            )
           })}
       </div>
     </>
-  );
-};
+  )
+}
 
 const Collection = () => {
-  const { address, contractAddress } = useParams();
+  const { address, contractAddress } = useParams()
 
   return (
     <div className="w-full min-h-screen">
@@ -287,7 +276,7 @@ const Collection = () => {
         <Project contractAddress={contractAddress} />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Collection;
+export default Collection

@@ -1,5 +1,5 @@
-import { XCircleIcon } from "@heroicons/react/outline";
-import { motion } from "framer-motion";
+import { XCircleIcon } from "@heroicons/react/outline"
+import { motion } from "framer-motion"
 
 const dropIn = {
   hidden: {
@@ -20,7 +20,7 @@ const dropIn = {
     y: "100vh",
     opacity: 0,
   },
-};
+}
 
 const Backdrop = ({ children, onClick }) => {
   return (
@@ -33,8 +33,8 @@ const Backdrop = ({ children, onClick }) => {
     >
       {children}
     </motion.div>
-  );
-};
+  )
+}
 
 const Modal = ({ handleClose, children, title, Icon }) => {
   return (
@@ -52,15 +52,12 @@ const Modal = ({ handleClose, children, title, Icon }) => {
             {Icon && <Icon className="w-5 h-5" />}
             <h4 className="text-xl font-bold">{title}</h4>
           </div>
-          <XCircleIcon
-            onClick={handleClose}
-            className="h-7 w-7 cursor-pointer"
-          />
+          <XCircleIcon onClick={handleClose} className="h-7 w-7 cursor-pointer" />
         </div>
         <div className="p-5">{children}</div>
       </motion.div>
     </Backdrop>
-  );
-};
+  )
+}
 
-export default Modal;
+export default Modal

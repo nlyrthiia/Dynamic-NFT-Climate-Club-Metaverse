@@ -1,25 +1,20 @@
-import React, { useState } from "react";
-import { GlobeIcon } from "@heroicons/react/outline";
+import React, { useState } from "react"
+import { GlobeIcon } from "@heroicons/react/outline"
 
-import bg from "../assets/bg.png";
+import bg from "../assets/bg.png"
 
 const InitialMinting = () => {
   const [input, setInput] = useState({
     cot_amout: "",
     cot_unit_price: "",
-  });
+  })
   const handleChange = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
-  };
+    setInput({ ...input, [e.target.name]: e.target.value })
+  }
   return (
-    <div
-      className="bg-cover bg-no-repeat"
-      style={{ backgroundImage: `url(${bg})` }}
-    >
+    <div className="bg-cover bg-no-repeat" style={{ backgroundImage: `url(${bg})` }}>
       <div className="h-[calc(100vh-100px)] container mx-auto pt-20">
-        <h1 className="text-6xl text-center font-bold mb-24">
-          Initial Minting
-        </h1>
+        <h1 className="text-6xl text-center font-bold mb-24">Initial Minting</h1>
         <div className="rounded-xl border border-gray-200">
           <div className="p-4 border-b border-gray-200 flex items-center justify-start gap-4 bg-white">
             <GlobeIcon className="w-6 h-6" />
@@ -28,10 +23,7 @@ const InitialMinting = () => {
           <div className="p-4 space-y-10 bg-[#FBFDFF]">
             <div className="flex items-center justify-between">
               <div className="flex items-center justify-start gap-2">
-                <label
-                  htmlFor="cot_amount"
-                  className="flex flex-col items-start justify-center"
-                >
+                <label htmlFor="cot_amount" className="flex flex-col items-start justify-center">
                   <p>Carbon offsets Credits（COT）</p>
                   <p>(unit: ton)</p>
                 </label>
@@ -72,20 +64,16 @@ const InitialMinting = () => {
                 <p>(unit: DAI)</p>
               </div>
 
-              <p className="text-2xl font-bold">
-                {input.cot_amout * input.cot_unit_price} DAI
-              </p>
+              <p className="text-2xl font-bold">{input.cot_amout * input.cot_unit_price} DAI</p>
             </div>
           </div>
         </div>
         <div className="mt-16 flex items-center justify-center">
-          <button className="p-3 px-10 text-white rounded-xl bg-[#73ca67] font-bold">
-            Mint
-          </button>
+          <button className="p-3 px-10 text-white rounded-xl bg-[#73ca67] font-bold">Mint</button>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default InitialMinting;
+export default InitialMinting

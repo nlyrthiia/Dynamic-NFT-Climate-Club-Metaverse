@@ -1,23 +1,18 @@
-import React, { useContext } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { UserCircleIcon, CreditCardIcon } from "@heroicons/react/outline";
-import { UserIcon } from "@heroicons/react/solid";
-import clsx from "clsx";
+import React, { useContext } from "react"
+import { Link, NavLink } from "react-router-dom"
+import { UserCircleIcon, CreditCardIcon } from "@heroicons/react/outline"
+import { UserIcon } from "@heroicons/react/solid"
+import clsx from "clsx"
 
-import logo from "../assets/logo.png";
-import WalletContext from "../context/WalletContext";
+import logo from "../assets/logo.png"
+import WalletContext from "../context/WalletContext"
 
 const truncate = (address) => {
-  return address && address.slice(0, 4) + "..." + address.slice(-2);
-};
+  return address && address.slice(0, 4) + "..." + address.slice(-2)
+}
 
 const Navbar = () => {
-  const {
-    walletInfo,
-    error,
-    handleWalletConnect,
-    handleNetworkChange,
-  } = useContext(WalletContext);
+  const { walletInfo, error, handleWalletConnect, handleNetworkChange } = useContext(WalletContext)
   return (
     <header className="w-full h-[100px] sticky top-0 shadow-lg z-10 bg-white">
       <div className="container h-full mx-auto flex items-center justify-between px-10">
@@ -30,7 +25,7 @@ const Navbar = () => {
               clsx(
                 "hover:text-black",
                 isActive &&
-                  "text-black before:block before:absolute before:top-[60px] before:w-full before:h-[4px] before:bg-[#73c000] relative inline-block"
+                  "text-black before:block before:absolute before:top-[60px] before:w-full before:h-[4px] before:bg-[#73c000] relative inline-block",
               )
             }
             to="/"
@@ -42,7 +37,7 @@ const Navbar = () => {
               clsx(
                 "hover:text-black",
                 isActive &&
-                  "text-black before:block before:absolute before:top-[60px] before:w-full before:h-[4px] before:bg-[#73c000] relative inline-block"
+                  "text-black before:block before:absolute before:top-[60px] before:w-full before:h-[4px] before:bg-[#73c000] relative inline-block",
               )
             }
             to="explore"
@@ -54,7 +49,7 @@ const Navbar = () => {
               clsx(
                 "hover:text-black",
                 isActive &&
-                  "text-black before:block before:absolute before:top-[60px] before:w-full before:h-[4px] before:bg-[#73c000] relative inline-block"
+                  "text-black before:block before:absolute before:top-[60px] before:w-full before:h-[4px] before:bg-[#73c000] relative inline-block",
               )
             }
             to="rank"
@@ -66,7 +61,7 @@ const Navbar = () => {
               clsx(
                 "hover:text-black",
                 isActive &&
-                  "text-black before:block before:absolute before:top-[60px] before:w-full before:h-[4px] before:bg-[#73c000] relative inline-block"
+                  "text-black before:block before:absolute before:top-[60px] before:w-full before:h-[4px] before:bg-[#73c000] relative inline-block",
               )
             }
             to="initial-minting"
@@ -78,7 +73,7 @@ const Navbar = () => {
               clsx(
                 "hover:text-black",
                 isActive &&
-                  "text-black before:block before:absolute before:top-[60px] before:w-full before:h-[4px] before:bg-[#73c000] relative inline-block"
+                  "text-black before:block before:absolute before:top-[60px] before:w-full before:h-[4px] before:bg-[#73c000] relative inline-block",
               )
             }
             to="resources"
@@ -90,7 +85,7 @@ const Navbar = () => {
               clsx(
                 "hover:text-black",
                 isActive &&
-                  "text-black before:block before:absolute before:top-[60px] before:w-full before:h-[4px] before:bg-[#73c000] relative inline-block"
+                  "text-black before:block before:absolute before:top-[60px] before:w-full before:h-[4px] before:bg-[#73c000] relative inline-block",
               )
             }
             to="account"
@@ -104,21 +99,21 @@ const Navbar = () => {
           {!error && walletInfo.address ? (
             <div className="text-black">{truncate(walletInfo.address)}</div>
           ) : error && walletInfo.address ? (
-            <button
-              onClick={handleNetworkChange}
-              className="p-2 bg-red-500 text-white rounded-xl"
-            >
+            <button onClick={handleNetworkChange} className="p-2 bg-red-500 text-white rounded-xl">
               Switch Network
             </button>
           ) : (
-            <button onClick={handleWalletConnect} className="p-2 px-4 bg-[#73c000] text-white rounded-xl">
-                CONNECT WALLET
+            <button
+              onClick={handleWalletConnect}
+              className="p-2 px-4 bg-[#73c000] text-white rounded-xl"
+            >
+              CONNECT WALLET
             </button>
           )}
         </nav>
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

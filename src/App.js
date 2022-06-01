@@ -1,12 +1,12 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { RecoilRoot } from "recoil";
+import React from "react"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import { RecoilRoot } from "recoil"
 
-import { Navbar, ScrollToTop } from "./components";
-import { Home, Explore, Collection, Single, InitialMinting } from "./pages";
-import { WalletProvider } from "./context/WalletContext";
+import { Navbar, ScrollToTop } from "./components"
+import { Home, Explore, Collection, Single, InitialMinting } from "./pages"
+import { WalletProvider } from "./context/WalletContext"
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
         </Router>
       </WalletProvider>
     </RecoilRoot>
-  );
+  )
 }
 
-export default App;
+export default App

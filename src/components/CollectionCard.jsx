@@ -1,14 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from "react"
+import { Link } from "react-router-dom"
 
-const CollectionCard = ({
-  background,
-  contractAddress,
-  name,
-  creator,
-  title,
-  cot,
-}) => {
+const CollectionCard = ({ background, contractAddress, name, creator, title, cot }) => {
   return (
     <Link to={`/assets/${contractAddress}`} className="relative text-white">
       <div
@@ -24,11 +17,9 @@ const CollectionCard = ({
         <p className="text-xs">Create by {creator}</p>
         <h3 className="text-sm text-center">{title}</h3>
       </div>
-      <div className="absolute bottom-2 right-4 text-[10px]">
-        total market cap : {cot}t
-      </div>
+      <div className="absolute bottom-2 right-4 text-[10px]">total market cap : {cot}t</div>
     </Link>
-  );
-};
+  )
+}
 
-export default CollectionCard;
+export default CollectionCard

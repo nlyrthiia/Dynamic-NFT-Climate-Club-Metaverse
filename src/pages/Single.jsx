@@ -1,5 +1,5 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
 import {
   ChevronDownIcon,
   MenuAlt2Icon,
@@ -13,27 +13,16 @@ import {
   SwitchHorizontalIcon,
   BookmarkIcon,
   CubeTransparentIcon,
-} from "@heroicons/react/outline";
-import { Link } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
+} from "@heroicons/react/outline"
+import { Link } from "react-router-dom"
+import { AnimatePresence } from "framer-motion"
 
-import {
-  Accordion,
-  GenerationCard,
-  SingleNFTCard,
-  Modal,
-  SplitForm,
-} from "../components";
-import chart from "../assets/chart.png";
-import WalletContext from "../context/WalletContext";
-import {
-  mintNFT,
-  neutralize,
-  getOwner,
-  getNFTInfo,
-} from "../library";
-import { collections, initialNFTs } from "../data";
-import { toast } from "react-toastify";
+import { Accordion, GenerationCard, SingleNFTCard, Modal, SplitForm } from "../components"
+import chart from "../assets/chart.png"
+import WalletContext from "../context/WalletContext"
+import { mintNFT, neutralize, getOwner, getNFTInfo } from "../library"
+import { collections, initialNFTs } from "../data"
+import { toast } from "react-toastify"
 
 const PropertyCard = ({ name, value }) => {
   return (
@@ -41,51 +30,50 @@ const PropertyCard = ({ name, value }) => {
       <p className="text-blue-500">{name}</p>
       <p className="font-semibold">{value.toString()}</p>
     </div>
-  );
-};
+  )
+}
 
 const Single = () => {
-  const { contractAddress, tokenId } = useParams();
-  const [owner, setOwner] = useState("");
-  const [refresh, setRefresh] = useState(true);
-  const [tokenInfo, setTokenInfo] = useState();
-  const { walletInfo } = useContext(WalletContext);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [modalContext, setModalContext] = useState(null);
+  const { contractAddress, tokenId } = useParams()
+  const [owner, setOwner] = useState("")
+  const [refresh, setRefresh] = useState(true)
+  const [tokenInfo, setTokenInfo] = useState()
+  const { walletInfo } = useContext(WalletContext)
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [modalContext, setModalContext] = useState(null)
 
   const getTokenInfo = async () => {
     try {
-      const info = await getNFTInfo(tokenId);
-      return info;
-    }
-    catch (err) {
+      const info = await getNFTInfo(tokenId)
+      return info
+    } catch (err) {
       // console.log(new Error(err))
-      return {};
+      return {}
     }
-  };
+  }
   useEffect(() => {
     const fetchOwner = async () => {
-      const _owner = await getOwner(tokenId);
-      setOwner(_owner);
-    };
-    fetchOwner();
-  }, [tokenId]);
+      const _owner = await getOwner(tokenId)
+      setOwner(_owner)
+    }
+    fetchOwner()
+  }, [tokenId])
 
   useEffect(() => {
     const getInfo = async () => {
-      let info = await getTokenInfo();
+      let info = await getTokenInfo()
       if (!info.imageUrl) {
-        setTokenInfo(initialNFTs[tokenId - 1]);
+        setTokenInfo(initialNFTs[tokenId - 1])
       } else {
-        setTokenInfo(info);
+        setTokenInfo(info)
       }
-    };
-    getInfo();
-  }, [tokenId, refresh]);
+    }
+    getInfo()
+  }, [tokenId, refresh])
 
   const [collectionName, collectionInfo] = Object.entries(collections).find(
-    (c) => c[1].contractAddress === contractAddress
-  );
+    (c) => c[1].contractAddress === contractAddress,
+  )
   const details = {
     "Contract Address": contractAddress,
     "Token ID": tokenId,
@@ -94,8 +82,8 @@ const Single = () => {
     Metadata: "Frozen",
     "Creator Fees": "2.5%",
     COT: `${tokenInfo?.cot}t`,
-  };
-  if (!tokenInfo) return null;
+  }
+  if (!tokenInfo) return null
   return (
     <div className="container mx-auto p-8 space-y-4">
       <AnimatePresence>
@@ -108,20 +96,20 @@ const Single = () => {
             {modalContext === "Neutralize" ? (
               <div className="flex flex-col items-center justify-between gap-8">
                 <p>
-                  Have you used the Carbon Offset (COT) in this DNFT to help
-                  with carbon neutrality？
+                  Have you used the Carbon Offset (COT) in this DNFT to help with carbon
+                  neutrality？
                 </p>
                 <button
                   className="p-2 px-4 rounded-xl bg-red-500 text-white"
                   onClick={() => {
                     if (!walletInfo.address) {
-                      toast.error("Please connect to your wallet");
-                      toast.clearWaitingQueue();
-                      return;
+                      toast.error("Please connect to your wallet")
+                      toast.clearWaitingQueue()
+                      return
                     }
-                    setModalIsOpen(false);
-                    neutralize(tokenId);
-                    setRefresh((prev) => !prev);
+                    setModalIsOpen(false)
+                    neutralize(tokenId)
+                    setRefresh((prev) => !prev)
                   }}
                 >
                   Confirm
@@ -150,9 +138,7 @@ const Single = () => {
           )}
           <div className="rounded-xl border border-gray-200">
             <div className="p-4 border-b border-gray-200">
-              <h2 className="font-bold">
-                Sale ends June 22, 2022 at 9:09pm GMT+8
-              </h2>
+              <h2 className="font-bold">Sale ends June 22, 2022 at 9:09pm GMT+8</h2>
             </div>
             <div className="p-4 flex flex-col gap-5">
               <div className="flex items-center justify-between">
@@ -172,12 +158,15 @@ const Single = () => {
                 </div>
               </div>
               <div className="flex justify-end item-center gap-6">
-                {tokenInfo.neutralized ? <p className="text-xl p-2 border border-gray-200 rounded-xl">Token Neutralized</p> : owner && owner === walletInfo?.address ?<>
+                {tokenInfo.neutralized ? (
+                  <p className="text-xl p-2 border border-gray-200 rounded-xl">Token Neutralized</p>
+                ) : owner && owner === walletInfo?.address ? (
+                  <>
                     <button
                       className="p-4 rounded-xl bg-[#d5f4ce] font-bold border border-[#73c000]"
                       onClick={() => {
-                        setModalIsOpen(true);
-                        setModalContext("Split into New NFT");
+                        setModalIsOpen(true)
+                        setModalContext("Split into New NFT")
                       }}
                     >
                       Split into New NFT
@@ -185,13 +174,15 @@ const Single = () => {
                     <button
                       className="p-4 rounded-xl bg-[#73ca67] font-bold"
                       onClick={() => {
-                        setModalIsOpen(true);
-                        setModalContext("Neutralize");
+                        setModalIsOpen(true)
+                        setModalContext("Neutralize")
                       }}
                     >
                       Neutralize
                     </button>
-                  </> :<>
+                  </>
+                ) : (
+                  <>
                     <button className="flex items-center justify-center gap-4 p-4 rounded-xl bg-[#d5f4ce] font-bold border border-[#73c000]">
                       <BookmarkIcon className="w-6 h-6" />
                       <p>Make Offer</p>
@@ -200,22 +191,22 @@ const Single = () => {
                       className="flex items-center justify-center gap-4 p-4 rounded-xl bg-[#73ca67] font-bold"
                       onClick={async () => {
                         if (!walletInfo.address) {
-                          toast.error("Please connect to your wallet");
-                          toast.clearWaitingQueue();
-                          return;
+                          toast.error("Please connect to your wallet")
+                          toast.clearWaitingQueue()
+                          return
                         }
-                        await mintNFT(tokenId, tokenInfo);
-                        toast.success("Successfully minted NFT");
-                        toast.clearWaitingQueue();
-                        let _owner = await getOwner(tokenId);
-                        setOwner(_owner);
+                        await mintNFT(tokenId, tokenInfo)
+                        toast.success("Successfully minted NFT")
+                        toast.clearWaitingQueue()
+                        let _owner = await getOwner(tokenId)
+                        setOwner(_owner)
                       }}
                     >
                       <DatabaseIcon className="w-6 h-6" />
                       <p>Buy Now</p>
                     </button>
                   </>
-                }
+                )}
               </div>
             </div>
           </div>
@@ -259,10 +250,9 @@ const Single = () => {
           <Accordion title="Description" Icon={MenuAlt2Icon}>
             <div className="p-4">
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-                et illum aspernatur, aut exercitationem officiis dolor dolore ad
-                sint laudantium architecto? Et, repellendus consectetur? Fugit
-                facilis in nobis aut ea.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum et illum
+                aspernatur, aut exercitationem officiis dolor dolore ad sint laudantium architecto?
+                Et, repellendus consectetur? Fugit facilis in nobis aut ea.
               </p>
             </div>
           </Accordion>
@@ -270,41 +260,20 @@ const Single = () => {
             <div className="p-4 grid grid-cols-3 gap-4">
               {tokenInfo &&
                 Object.entries(tokenInfo).map((attribute, index) => {
-                  if (attribute[0] === "imageUrl") return null;
-                  return (
-                    <PropertyCard
-                      key={index}
-                      name={attribute[0]}
-                      value={attribute[1]}
-                    />
-                  );
+                  if (attribute[0] === "imageUrl") return null
+                  return <PropertyCard key={index} name={attribute[0]} value={attribute[1]} />
                 })}
             </div>
           </Accordion>
-          <Accordion
-            title="Carbon Offset Credits (COT) Info"
-            Icon={DatabaseIcon}
-          >
+          <Accordion title="Carbon Offset Credits (COT) Info" Icon={DatabaseIcon}>
             <div className="p-4 grid grid-cols-3 gap-4">
               {Object.entries(collectionInfo).map((entry, index) => {
                 if (
-                  [
-                    "title",
-                    "contractAddress",
-                    "background",
-                    "creator",
-                    "cot",
-                  ].includes(entry[0])
+                  ["title", "contractAddress", "background", "creator", "cot"].includes(entry[0])
                 ) {
-                  return null;
+                  return null
                 } else {
-                  return (
-                    <PropertyCard
-                      key={index}
-                      name={entry[0]}
-                      value={entry[1]}
-                    />
-                  );
+                  return <PropertyCard key={index} name={entry[0]} value={entry[1]} />
                 }
               })}
             </div>
@@ -312,10 +281,7 @@ const Single = () => {
           <Accordion title="Detail" Icon={BookOpenIcon}>
             <div className="p-4 space-y-1">
               {Object.entries(details).map((entry, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between text-sm"
-                >
+                <div key={index} className="flex items-center justify-between text-sm">
                   <p>{entry[0]}:</p>
                   <p>{entry[1]}</p>
                 </div>
@@ -401,7 +367,7 @@ const Single = () => {
         </div>
       </Accordion>
     </div>
-  );
-};
+  )
+}
 
-export default Single;
+export default Single

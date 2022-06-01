@@ -1,79 +1,71 @@
-import React, { useState } from "react";
-import { PlusCircleIcon } from "@heroicons/react/outline";
-import { toast } from "react-toastify";
+import React, { useState } from "react"
+import { PlusCircleIcon } from "@heroicons/react/outline"
+import { toast } from "react-toastify"
 
-import { lv1NFT, lv2NFT, lv3NFT } from "../data";
-import { splitNFT } from "../library";
+import { lv1NFT, lv2NFT, lv3NFT } from "../data"
+import { splitNFT } from "../library"
 
 const SplitForm = ({ cot, tokenId, setRefresh, setModalIsOpen }) => {
-  const [inputFields, setInputFields] = useState([
-    { cot: "", cot_unit_price: "" },
-  ]);
+  const [inputFields, setInputFields] = useState([{ cot: "", cot_unit_price: "" }])
   const handleFormChange = (index, e) => {
-    let data = [...inputFields];
-    data[index][e.target.name] = e.target.value;
-    setInputFields(data);
-  };
+    let data = [...inputFields]
+    data[index][e.target.name] = e.target.value
+    setInputFields(data)
+  }
   const handleAddField = () => {
-    let newfield = { cot: "", cot_unit_price: "" };
-    setInputFields([...inputFields, newfield]);
-  };
+    let newfield = { cot: "", cot_unit_price: "" }
+    setInputFields([...inputFields, newfield])
+  }
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     let totalCot = inputFields.reduce((acc, cur) => {
-      return acc + Number(cur.cot);
-    }, 0);
+      return acc + Number(cur.cot)
+    }, 0)
     if (totalCot !== Number(cot)) {
-      return toast.error(`Total COT must be ${cot}`);
+      return toast.error(`Total COT must be ${cot}`)
     }
     let nftArray = inputFields.map((field) => {
       if (Number(field.cot) <= 8000 && Number(field.cot) > 5333) {
         return {
-          ...lv1NFT[Math.floor(Math.random() * 10)],
+          ...lv1NFT[Math.floor(Math.random() * (lv1NFT.length - 1))],
           cot: Number(field.cot),
           neutralized: false,
-        };
+        }
       } else if (Number(field.cot) <= 5333 && Number(field.cot) > 2666) {
         return {
-          ...lv2NFT[Math.floor(Math.random() * 10)],
+          ...lv2NFT[Math.floor(Math.random() * (lv2NFT.length - 1))],
           cot: Number(field.cot),
           neutralized: false,
-        };
+        }
       } else {
         return {
-          ...lv3NFT[Math.floor(Math.random() * 10)],
+          ...lv3NFT[Math.floor(Math.random() * (lv2NFT.length - 1))],
           cot: Number(field.cot),
           neutralized: false,
-        };
+        }
       }
-    });
+    })
     try {
-      setModalIsOpen(false);
-      await splitNFT(tokenId, nftArray);
-      setRefresh((prev) => !prev);
-      toast.success("Successfully split NFT");
-      toast.clearWaitingQueue();
+      setModalIsOpen(false)
+      await splitNFT(tokenId, nftArray)
+      setRefresh((prev) => !prev)
+      toast.success("Successfully split NFT")
+      toast.clearWaitingQueue()
     } catch (e) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong")
     }
-  };
+  }
   return (
     <form>
       {inputFields.map((input, index) => {
         return (
-          <div
-            key={index}
-            className="space-y-6 p-4 first:pt-0 border-b border-gray-200"
-          >
+          <div key={index} className="space-y-6 p-4 first:pt-0 border-b border-gray-200">
             <h1 className="text-2xl font-bold">
               {index === 0 ? "Oringinal NFT" : `NFT ${index + 1}`}
             </h1>
             <div className="flex items-center justify-between gap-6">
               <div className="flex items-center justify-start gap-2">
-                <label
-                  htmlFor="cot"
-                  className="flex flex-col items-start justify-center"
-                >
+                <label htmlFor="cot" className="flex flex-col items-start justify-center">
                   <p>Carbon offsets Credits（COT）</p>
                   <p>(unit: ton)</p>
                 </label>
@@ -116,13 +108,10 @@ const SplitForm = ({ cot, tokenId, setRefresh, setModalIsOpen }) => {
               <p className="text-xl">{input.cot * input.cot_unit_price} DAI</p>
             </div>
           </div>
-        );
+        )
       })}
       <div className="flex items-center justify-center mt-4">
-        <PlusCircleIcon
-          className="w-8 h-8 cursor-pointer"
-          onClick={handleAddField}
-        />
+        <PlusCircleIcon className="w-8 h-8 cursor-pointer" onClick={handleAddField} />
       </div>
       <button
         className="rounded-xl w-full text-lg font-bold p-4 bg-[#FFFAD0] mt-4"
@@ -131,7 +120,7 @@ const SplitForm = ({ cot, tokenId, setRefresh, setModalIsOpen }) => {
         Split
       </button>
     </form>
-  );
-};
+  )
+}
 
-export default SplitForm;
+export default SplitForm

@@ -1,9 +1,9 @@
-import clsx from "clsx";
-import React, { useState } from "react";
-import { ChevronUpIcon } from "@heroicons/react/outline";
+import clsx from "clsx"
+import React, { useState } from "react"
+import { ChevronUpIcon } from "@heroicons/react/outline"
 
 const Accordion = ({ Icon, title, children }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(true)
   return (
     <>
       <div className="rounded-xl w-full bg-white border border-gray-200">
@@ -11,7 +11,7 @@ const Accordion = ({ Icon, title, children }) => {
           <button
             className={clsx(
               "w-full p-4 flex items-center justify-start gap-2 font-bold border-b border-gray-200",
-              !isOpen && "border-none"
+              !isOpen && "border-none",
             )}
             onClick={() => setIsOpen((prev) => !prev)}
           >
@@ -21,7 +21,7 @@ const Accordion = ({ Icon, title, children }) => {
               <ChevronUpIcon
                 className={clsx(
                   "w-6 h-6 transition-transform duration-300",
-                  !isOpen && "rotate-180"
+                  !isOpen && "rotate-180",
                 )}
               />
             </div>
@@ -30,14 +30,14 @@ const Accordion = ({ Icon, title, children }) => {
         <div
           className={clsx(
             "w-full max-h-[1000px] transition-max-h duration-300 overflow-hidden bg-[#fbfffb]",
-            !isOpen && "max-h-0"
+            !isOpen && "max-h-0",
           )}
         >
           {children}
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Accordion;
+export default Accordion
