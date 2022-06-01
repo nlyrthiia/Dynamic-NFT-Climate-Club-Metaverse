@@ -111,8 +111,8 @@ const Navbar = () => {
               Switch Network
             </button>
           ) : (
-            <button onClick={handleWalletConnect}>
-              <CreditCardIcon className="h-8 w-8" />
+            <button onClick={handleWalletConnect} className="p-2 px-4 bg-[#73c000] text-white rounded-xl">
+                CONNECT WALLET
             </button>
           )}
         </nav>
