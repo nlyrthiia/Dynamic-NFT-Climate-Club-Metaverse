@@ -165,10 +165,8 @@ const Single = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center justify-end gap-6">
-                {/* owner && owner === walletInfo.address */}
-                {owner && owner === walletInfo.address ? (
-                  <>
+              <div className="flex justify-end item-center gap-6">
+                {tokenInfo.neutralized ? <p className="text-xl p-2 border border-gray-200 rounded-xl">Token Neutralized</p> : owner && owner === walletInfo?.address ?<>
                     <button
                       className="p-4 rounded-xl bg-[#d5f4ce] font-bold border border-[#73c000]"
                       onClick={() => {
@@ -185,11 +183,9 @@ const Single = () => {
                         setModalContext("Neutralize");
                       }}
                     >
-                      Neutralized
+                      Neutralize
                     </button>
-                  </>
-                ) : (
-                  <>
+                  </> :<>
                     <button className="flex items-center justify-center gap-4 p-4 rounded-xl bg-[#d5f4ce] font-bold border border-[#73c000]">
                       <BookmarkIcon className="w-6 h-6" />
                       <p>Make Offer</p>
@@ -213,7 +209,7 @@ const Single = () => {
                       <p>Buy Now</p>
                     </button>
                   </>
-                )}
+                }
               </div>
             </div>
           </div>
