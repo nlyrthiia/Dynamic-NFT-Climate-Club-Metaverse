@@ -1,5 +1,6 @@
 import { atom } from "recoil"
 import { initialNFTs } from "../data"
+
 export const ownedNFTsState = atom({
   key: "ownedNFTsState",
   default: [],
@@ -7,5 +8,5 @@ export const ownedNFTsState = atom({
 
 export const allNFTState = atom({
   key: "allNFTState",
-  default: [...initialNFTs],
+  default: [...initialNFTs.map(nft => ({...nft, cot: 8000, neutralized: false}))],
 })
