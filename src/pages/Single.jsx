@@ -54,8 +54,14 @@ const Single = () => {
   const [modalContext, setModalContext] = useState(null);
 
   const getTokenInfo = async () => {
-    const info = await getNFTInfo(tokenId);
-    return info;
+    try {
+      const info = await getNFTInfo(tokenId);
+      return info;
+    }
+    catch (err) {
+      // console.log(new Error(err))
+      return {};
+    }
   };
   useEffect(() => {
     const fetchOwner = async () => {
@@ -373,8 +379,8 @@ const Single = () => {
             >
               <rect opacity="0.01" width="20" height="20" fill="black" />
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M18.0557 13.8339L11.7682 7.54652L12.8398 6.47496L13.5485 7.18368C13.7853 7.42047 14.1909 7.42753 14.4367 7.18174L15.3851 6.23335C15.6334 5.98505 15.6317 5.58992 15.387 5.34521L11.4718 1.43C11.235 1.19321 10.8294 1.18615 10.5837 1.43195L9.63526 2.38033C9.38697 2.62863 9.3886 3.02376 9.63332 3.26848L10.5588 4.19397L6.35208 8.40071L5.46648 7.51512C5.22969 7.27833 4.82413 7.27127 4.57834 7.51706L3.62995 8.46545C3.38165 8.71375 3.38329 9.10888 3.628 9.35359L7.54321 13.2688C7.78 13.5056 8.18556 13.5126 8.43135 13.2669L9.37974 12.3185C9.62804 12.0702 9.6264 11.675 9.38169 11.4303L8.63306 10.6817L9.94345 9.37131L16.2309 15.6587C16.4804 15.9083 16.874 15.9064 17.118 15.6624L18.0593 14.7211C18.3058 14.4746 18.3016 14.0799 18.0557 13.8339ZM3.2129 16.5922H9.5871V17.4961H10.2371V19.2026H2.5V17.4961H3.2129V16.5922Z"
                 fill="black"
               />
