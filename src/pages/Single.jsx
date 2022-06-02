@@ -79,7 +79,7 @@ const Single = () => {
     "Contract Address": contractAddress,
     "Token ID": tokenId,
     "Token Standard": "ERC-721",
-    Bloclchain: "Polygon",
+    Blockchain: "Polygon",
     Metadata: "Frozen",
     "Creator Fees": "2.5%",
     COT: `${tokenInfo?.cot}t`,
