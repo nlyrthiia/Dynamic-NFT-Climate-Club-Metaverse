@@ -4,8 +4,9 @@ import { Suspense } from "react"
 import { OrbitControls } from "@react-three/drei"
 
 import { Earth, YoutubeEmbed } from "../components"
-import { ReactComponent as Discord } from "../assets/discord.svg"
+import { ReactComponent as Telegram } from "../assets/telegram.svg"
 import { ReactComponent as Twitter } from "../assets/twitter.svg"
+import { ReactComponent as Discord } from "../assets/discord.svg"
 
 const Home = () => {
   return (
@@ -17,7 +18,7 @@ const Home = () => {
         backgroundSize: "cover",
       }}
     >
-      <div className="container mx-auto h-full grid grid-cols-2 gap-4 ">
+      <div className="container mx-auto h-full grid grid-cols-2 gap-4 relative">
         <section className="p-10 pt-20 flex flex-col justify-start items-start space-y-4">
           <div>
             <h1 className="text-5xl leading-normal mb-4">
@@ -45,10 +46,13 @@ const Home = () => {
             </Suspense>
           </Canvas>
         </section>
-      </div>
-      <div className="flex gap-10 absolute bottom-10 left-40">
-        <Discord className="cursor-pointer" />
-        <Twitter className="cursor-pointer" />
+        <div className="flex items-center justify-cneter gap-10 absolute bottom-10 left-0">
+          <a href={`https://t.me/DCCMs`} target="_blank" rel="noopener noreferrer">
+            <Telegram className="cursor-pointer" />
+          </a>
+          <Twitter className="cursor-pointer" />
+          <Discord className="cursor-pointer w-12 h-12"/>
+        </div>
       </div>
     </div>
   )
