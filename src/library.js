@@ -115,13 +115,13 @@ export const getNFTsOfUser = async (address) => {
     return results
   } catch (e) {
     toast.error("Error getting NFTs of user")
+    toast.clearWaitingQueue()
   }
 }
 
 export const neutralize = async (tokenId) => {
   const tx = await contract.neutralize(tokenId)
   await tx.wait()
-  toast.success("Neutralized!")
 }
 
 export const splitNFT = async (tokenId, nftArray) => {

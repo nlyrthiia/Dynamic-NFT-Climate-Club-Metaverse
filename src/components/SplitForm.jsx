@@ -5,7 +5,7 @@ import { toast } from "react-toastify"
 import { lv1NFT, lv2NFT, lv3NFT } from "../data"
 import { splitNFT } from "../library"
 
-const SplitForm = ({ cot, tokenId, setRefresh, setModalIsOpen }) => {
+const SplitForm = ({ cot, tokenId, setRefresh, setModalIsOpen, setIsLoading }) => {
   const [inputFields, setInputFields] = useState([{ cot: "", cot_unit_price: "" }])
   const handleFormChange = (index, e) => {
     let data = [...inputFields]
@@ -46,8 +46,10 @@ const SplitForm = ({ cot, tokenId, setRefresh, setModalIsOpen }) => {
       }
     })
     try {
-      setModalIsOpen(false)
+      setIsLoading(true)
       await splitNFT(tokenId, nftArray)
+      setIsLoading(false)
+      setModalIsOpen(false)
       setRefresh((prev) => !prev)
       toast.success("Successfully split NFT")
       toast.clearWaitingQueue()
