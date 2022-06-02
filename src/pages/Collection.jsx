@@ -150,7 +150,7 @@ const Project = ({ contractAddress }) => {
             <img src={polygonIcon} alt="" className="w-10 h-10" />
             <p className="text-[#f3c000]">
               <a
-                href={`https://mumbai.polygonscan.com/address/${contractAddress}`}
+                href={`https://testnets.opensea.io/collection/briquettes-flxz7ix6j8`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

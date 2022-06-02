@@ -143,7 +143,7 @@ const Single = () => {
               <div className="absolute top-0 bottom-0 left-0 right-0 bg-gray-300/80 flex items-center justify-center">
                 <svg
                   role="status"
-                  class="w-10 h-10 mr-2 text-gray-200 animate-spin fill-[#73c000]"
+                  className="w-10 h-10 mr-2 text-gray-200 animate-spin fill-[#73c000]"
                   viewBox="0 0 100 101"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"

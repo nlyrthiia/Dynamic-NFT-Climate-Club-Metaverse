@@ -37,6 +37,8 @@ contract COTNFT is ERC721{
     uint256 public maxCOT = 800000;
     uint256 public totalCOTMinted = 0;
     
+    uint256[] private _mintedTokenIds;
+    
     mapping(uint256 => NFTInfo) private _tokenInfo;
     mapping(address => uint256[]) private _tokensOfAddress;
 
@@ -91,16 +93,8 @@ contract COTNFT is ERC721{
         return _totalSupply;
     }
 
-    function childNFTs() public view returns(NFTInfo[] memory) {
-        uint256 maxChildId = _childTokenIdCounter.current();
-        uint256 initChildId = 101;
-        uint256 count = maxChildId - initChildId;
-        NFTInfo[] memory nftInfos = new NFTInfo[](count);
-        for (uint256 i=0; i < count; i++) {
-            NFTInfo storage info = _tokenInfo[i + initChildId];
-            nftInfos[i] = info;
-        }
-        return nftInfos;
+    function mintedTokenIds() public view returns(uint256[] memory) {
+        return _mintedTokenIds;
     }
 
     function split(uint256 tokenId, NFTInfo[] memory nftArray) public {
@@ -138,6 +132,7 @@ contract COTNFT is ERC721{
 
                 _tokenInfo[newTokenId] = info;
                 _tokensOfAddress[_msgSender()].push(newTokenId);
+                _mintedTokenIds.push(newTokenId);
 
                 _safeMint(_msgSender(), newTokenId);
             }
@@ -161,6 +156,7 @@ contract COTNFT is ERC721{
         _totalSupply += 1;
         _tokenInfo[tokenId] = nftInfo;
         _tokensOfAddress[_msgSender()].push(tokenId);
+        _mintedTokenIds.push(tokenId);
 
         _safeMint(to, tokenId);
     }
@@ -173,6 +169,7 @@ contract COTNFT is ERC721{
         NFTInfo memory nft = _tokenInfo[tokenId];
         string memory cot = uint2str(nft.cot);
         string memory totalCOT = uint2str(projectInfo.totalCOT);
+        string memory neutralized = nft.neutralized ? "true" : "false";
         return string(
                 abi.encodePacked(
                     "data:application/json;base64,",
@@ -199,6 +196,8 @@ contract COTNFT is ERC721{
                                 nft.eye,
                                 '"},{"trait_type":"sdg","value":"',
                                 nft.sdg,
+                                '"},{"trait_type":"neutralized","value":"',
+                                neutralized,
                                 '"},{"display_type":"number","trait_type":"COT(t)","value":"',
                                  cot,
                                 '"}]}'

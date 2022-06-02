@@ -19,7 +19,8 @@ const contractAbi = [
   `function getNFTInfo(uint256 tokenId) view returns (${nftInfo} memory nftInfo)`,
   `function ownerOf(uint256 tokenId) view returns (address)`,
   `function getTokensOfAddress(address _sender) view returns (uint256[] memory)`,
-  `function childNFTs() view returns(${nftInfo}[] memory)`,
+  // `function childNFTs() view returns(${nftInfo}[] memory)`,
+  `function mintedTokenIds() view returns (uint256[] memory)`
 ]
 
 const contract = new ethers.Contract(contractAddress, contractAbi, signer)
@@ -33,46 +34,21 @@ export const getOwner = async (tokenId) => {
   }
 }
 
-export const getAllNFTs = async () => {
-  let results = []
+export const getAllNFTs = async() => {
+  let results = [...initialNFTs]
   try {
-    for (let i = 1; i <= initialNFTAmount; i++) {
-      const nftInfo = await getNFTInfo(i)
-      if (!nftInfo.imageUrl) {
-        results.push(initialNFTs[i - 1])
-      } else {
-        results.push(nftInfo)
+    let _ids = await contract.mintedTokenIds();
+    if (_ids) {
+      let ids = _ids.map(_id => _id && _id.toNumber())
+      for (let i = 0; i < ids.length; i++) {
+        let tokenId = ids[i];
+        const nftInfo = await getNFTInfo(tokenId);
+        results[tokenId - 1] = {...nftInfo};
       }
     }
-    const childNFTs = await getChildNFTInfos()
-    results = [...results, ...childNFTs]
-    return results
-  } catch (e) {
+    return results;
+  }catch(e) {
     console.log(e)
-  }
-}
-
-export const getChildNFTInfos = async () => {
-  try {
-    const childNFTInfos = await contract.childNFTs()
-    if (childNFTInfos.length) {
-      const infos = childNFTInfos.map((info, index) => ({
-        tokenId: initialNFTAmount + index + 1,
-        background: info[1],
-        wing: info[2],
-        body: info[3],
-        hat: info[4],
-        eye: info[5],
-        sdg: info[6],
-        imageUrl: info[0].substring(5),
-        cot: info[7].toNumber(),
-        neutralized: info[8],
-      }))
-      return infos
-    }
-    return null
-  } catch (e) {
-    // toast.error("Failed to get child NFTs");
   }
 }
 
@@ -132,7 +108,7 @@ export const splitNFT = async (tokenId, nftArray) => {
     await tx.wait()
     toast.success(`Successfully split NFT #${tokenId}`)
   } catch (e) {
-    toast.error(`Error splitting NFT #${tokenId}`)
+    console.log(e)
   }
 }
 

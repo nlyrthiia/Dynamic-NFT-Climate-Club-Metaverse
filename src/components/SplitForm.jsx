@@ -51,10 +51,8 @@ const SplitForm = ({ cot, tokenId, setRefresh, setModalIsOpen, setIsLoading }) =
       setIsLoading(false)
       setModalIsOpen(false)
       setRefresh((prev) => !prev)
-      toast.success("Successfully split NFT")
-      toast.clearWaitingQueue()
     } catch (e) {
-      toast.error("Something went wrong")
+      toast.error(`Error splitting NFT #${tokenId}`)
     }
   }
   return (
