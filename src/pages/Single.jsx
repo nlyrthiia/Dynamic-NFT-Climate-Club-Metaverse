@@ -63,10 +63,9 @@ const Single = () => {
     const getInfo = async () => {
       let info = await getTokenInfo()
       if (!info.imageUrl) {
-        setTokenInfo(initialNFTs[tokenId - 1])
+        setTokenInfo({...initialNFTs[tokenId - 1], cot: 8000, neutralized: false})
       } else {
         setTokenInfo(info)
-        console.log(info)
       }
     }
     getInfo()
@@ -261,6 +260,7 @@ const Single = () => {
             <div className="p-4 grid grid-cols-3 gap-4">
               {tokenInfo &&
                 Object.entries(tokenInfo).map((attribute, index) => {
+                  console.log(tokenInfo)
                   if (attribute[0] === "imageUrl") return null
                   return <PropertyCard key={index} name={attribute[0]} value={attribute[1]} />
                 })}
