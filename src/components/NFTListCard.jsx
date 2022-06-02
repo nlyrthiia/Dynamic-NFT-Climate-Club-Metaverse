@@ -1,13 +1,15 @@
 import React from "react"
 import { EyeIcon, HeartIcon } from "@heroicons/react/outline"
 import { Link } from "react-router-dom"
+import clsx from "clsx";
 
 import badge from "../assets/badge.png"
 
 const status = ["NEW", "BUY NOW", "ON AUCTION", "HAS OFFERS"]
 
 const NFTListCard = ({ cot, contractAddress, tokenId, collectionName, imageUrl, neutralized }) => {
-  const index = Math.floor(Math.random() * 4)
+  // const index = Math.floor(Math.random() * 4)
+  const index = tokenId > 100 ? 0 : 1;
   return (
     <div className="rounded-xl shadow-md overflow-hidden">
       <Link to={`/assets/${contractAddress}/${tokenId}`}>
@@ -88,8 +90,8 @@ const NFTListCard = ({ cot, contractAddress, tokenId, collectionName, imageUrl, 
               <p className="text-xs text-gray-500">{Math.floor(Math.random() * 10)}</p>
             </div>
           </div>
-          <div className="bg-[#73c000] text-white p-1.5 text-lg absolute left-0 bottom-4">
-            <p>{status[index]}</p>
+          <div className={clsx("text-white p-1.5 text-lg absolute left-0 bottom-4", neutralized ? "ml-1 bg-white border border-gray-500 rounded-xl text-black shadow-[5px_5px_0px_2px_rgba(0,0,0)]" : "bg-[#73c000]")}>
+            <p>{neutralized ? "Neutralized" : status[index]}</p>
           </div>
         </div>
         <div className="flex items-center justify-between p-2">
