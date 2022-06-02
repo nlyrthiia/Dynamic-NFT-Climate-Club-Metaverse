@@ -39,7 +39,7 @@ const SplitForm = ({ cot, tokenId, setRefresh, setModalIsOpen, setIsLoading }) =
         }
       } else {
         return {
-          ...lv3NFT[Math.floor(Math.random() * (lv2NFT.length - 1))],
+          ...lv3NFT[Math.floor(Math.random() * (lv3NFT.length - 1))],
           cot: Number(field.cot),
           neutralized: false,
         }
