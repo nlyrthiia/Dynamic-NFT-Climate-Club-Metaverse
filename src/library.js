@@ -35,7 +35,7 @@ export const getOwner = async (tokenId) => {
 }
 
 export const getAllNFTs = async() => {
-  let results = [...initialNFTs]
+  let results = [...initialNFTs.map(nft => ({...nft, cot: 8000, neutralized: false}))]
   try {
     let _ids = await contract.mintedTokenIds();
     if (_ids) {

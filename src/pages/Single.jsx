@@ -48,7 +48,6 @@ const Single = () => {
       const info = await getNFTInfo(tokenId)
       return info
     } catch (err) {
-      // console.log(new Error(err))
       return {}
     }
   }
