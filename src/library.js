@@ -71,22 +71,24 @@ export const getNFTsOfUser = async (address) => {
   try {
     let results = []
     const tokenIds = await contract.getTokensOfAddress(address)
-    for (let i = 0; i < tokenIds.length; i++) {
-      const tokenId = tokenIds[i]
-      const nftInfo = await getNFTInfo(tokenId)
-      results.push({
-        tokenId: tokenId.toNumber(),
-        contractAddress,
-        imageUrl: nftInfo.imageUrl,
-        background: nftInfo.background,
-        wing: nftInfo.wing,
-        body: nftInfo.body,
-        hat: nftInfo.hat,
-        eye: nftInfo.eye,
-        sdg: nftInfo.sdg,
-        cot: nftInfo.cot,
-        neutralized: nftInfo.neutralized,
-      })
+    if (tokenIds) {
+      for (let i = 0; i < tokenIds.length; i++) {
+        const tokenId = tokenIds[i]
+        const nftInfo = await getNFTInfo(tokenId)
+        results.push({
+          tokenId: tokenId.toNumber(),
+          contractAddress,
+          imageUrl: nftInfo.imageUrl,
+          background: nftInfo.background,
+          wing: nftInfo.wing,
+          body: nftInfo.body,
+          hat: nftInfo.hat,
+          eye: nftInfo.eye,
+          sdg: nftInfo.sdg,
+          cot: nftInfo.cot,
+          neutralized: nftInfo.neutralized,
+        })
+      }
     }
     return results
   } catch (e) {
